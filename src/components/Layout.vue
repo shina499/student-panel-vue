@@ -9,13 +9,13 @@ import Note from "@/views/note.vue";
 </script>
 
 <template>
-  <div class="flex flex-col min-h-screen">
-    <Heading /> 
-    <div class="layout-wrapper flex flex-1 w-full">
-      <div class="sidebar-container">
+  <div class="wrapper">
+    <Heading />
+    <div class="content">
+      <div class="sidebar">
         <Sidebar />
       </div>
-      <div class="main-content">
+      <div class="main">
         <router-view />
       </div>
     </div>
@@ -24,43 +24,51 @@ import Note from "@/views/note.vue";
 </template>
 
 <style scoped>
-.layout-wrapper {
+/* کل صفحه */
+.wrapper {
   display: flex;
-  flex: 1;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
-/* Sidebar */
-.layout-wrapper {
+/* بخش وسط صفحه */
+.content {
   display: flex;
+  flex-direction: row;
+  width: 100%;
   flex: 1;
+ /* جلوگیری از بیرون‌زدگی */
 }
 
-/* Sidebar */
-.sidebar-container {
-  width: 250px;
-  flex-shrink: 0; /* از جمع شدن جلوگیری می‌کنه */
+/* سایدبار با عرض ثابت */
+.sidebar {
+  width: 23% !important;
+  flex-shrink: 0;
+  background-color: #fff;
 }
 
-/* Main Content */
-.main-content {
-  width: calc(100% - 250px);
+/* محتوای اصلی */
+.main {
+  flex: 1;
   padding: 1rem;
-  overflow: auto;
+  background-color: #f5f5f5;
+  overflow: auto; /* اگر محتوا زیاد بود، اسکرول بگیره */
+  width: 60% !important;
 }
 
-/* موبایل */
+
+/* حالت موبایل */
 @media (max-width: 900px) {
-  .layout-wrapper {
+  .content {
     flex-direction: column;
   }
 
-  .sidebar-container {
+  .sidebar {
     width: 100%;
   }
 
-  .main-content {
+  .main {
     width: 100%;
   }
 }
-
 </style>

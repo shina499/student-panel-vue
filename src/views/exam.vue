@@ -1,6 +1,6 @@
 <template>
   <div>
-    <section class="flex flex-col md:flex-row justify-center gap-6 items-center h-auto">
+    <section class="flex flex-col lg:flex-row md:flex-col justify-center gap-6 items-center h-auto">
       <!-- کارت تقویم امتحانی -->
       <div class="bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center w-full md:w-[500px]">
         <div class="w-full md:w-[500px] h-auto bg-white rounded-3xl shadow-2xl flex flex-col overflow-hidden">
@@ -76,7 +76,7 @@
 
     </section>
 
-    <div class="w-full md:w-[900px] h-auto mx-auto my-10 bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row">
+    <div class="w-full lg:w-[900px] md:w-[600px] h-auto mx-auto my-10 bg-white rounded-3xl shadow-2xl overflow-y-auto flex flex-col md:flex-row">
       <!-- سایدبار -->
       <div class="w-full md:w-64 bg-gradient-to-b from-purple-600 to-blue-500 p-6 flex flex-col items-center">
         <div class="text-white text-center mb-8">
