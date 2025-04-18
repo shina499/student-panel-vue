@@ -1,5 +1,13 @@
 <script setup>
 const props = defineProps(['heading'])
+
+// Get current date and format it in Persian
+const today = new Date()
+const formattedDate = new Intl.DateTimeFormat('fa-IR', {
+  weekday: 'long',
+  day: 'numeric',
+  month: 'long',
+}).format(today)
 </script>
 
 <template>
@@ -9,7 +17,7 @@ const props = defineProps(['heading'])
       <!-- خوش آمدید - فقط در md و بالاتر -->
       <div class="hidden md:flex flex-col gap-1 text-right min-w-[100px]">
         <p class="text-lg font-bold">خوش آمدید</p>
-        <p class="text-sm font-light">امروز <span>یکشنبه ۱۲ اسفند</span></p>
+        <p class="text-sm font-light">امروز <span>{{ formattedDate }}</span></p>
       </div>
 
       <!-- آیکن و عنوان - همیشه نمایش داده میشه -->
