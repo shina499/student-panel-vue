@@ -2,10 +2,6 @@
 import Heading from "@/components/Header.vue"; 
 import Footer from "@/components/Footer.vue"; 
 import Sidebar from "./Sidebar.vue";
-import Dashboard from "@/views/dashboard.vue";
-import Exam from "@/views/exam.vue";
-import Salamat from "@/views/salamat.vue";
-import Note from "@/views/note.vue";
 </script>
 
 <template>
@@ -37,12 +33,10 @@ import Note from "@/views/note.vue";
   flex-direction: row;
   width: 100%;
   flex: 1;
- /* جلوگیری از بیرون‌زدگی */
 }
 
-/* سایدبار با عرض ثابت */
+/* سایدبار */
 .sidebar {
-  width: 23% !important;
   flex-shrink: 0;
   background-color: #fff;
 }
@@ -51,24 +45,33 @@ import Note from "@/views/note.vue";
 .main {
   flex: 1;
   padding: 1rem;
-  background-color: #f5f5f5;
-  overflow: auto; /* اگر محتوا زیاد بود، اسکرول بگیره */
-  width: 60% !important;
+  background-color: #fefefe;
+  overflow: auto;
 }
 
+/* حالت دسکتاپ */
+@media (min-width: 1024px) {
+  .sidebar {
+    width: 350px !important; /* عرض ثابت مطابق با Sidebar.vue */
+  }
+  .main {
+    width: calc(100% - 350px) !important; /* پر کردن فضای باقی‌مانده */
+  }
+}
 
-/* حالت موبایل */
-@media (max-width: 900px) {
+/* حالت موبایل و تبلت */
+@media (max-width: 1023px) {
   .content {
     flex-direction: column;
   }
 
   .sidebar {
-    width: 100%;
+    width: 0; /* سایدبار به‌صورت پیش‌فرض هیچ عرضی ندارد */
+    overflow: hidden; /* جلوگیری از نمایش محتوای سایدبار وقتی بسته است */
   }
 
   .main {
-    width: 100%;
+    width: 100% !important;
   }
 }
 </style>
