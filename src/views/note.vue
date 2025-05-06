@@ -23,7 +23,7 @@
       </div>
 
       <!-- بخش نمایش یادداشت‌ها -->
-      <div id="notesContainer" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div id="notesContainer" class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <div
           v-for="note in notes"
           :key="note.id"
@@ -55,61 +55,122 @@
           </div>
         </div>
       </div>
-
     </div>
   </section>
 </template>
 
-  
 <script setup>
-  import { ref, onMounted } from 'vue'
-  
-  // متن ورودی یادداشت
-  const noteText = ref('')
-  // آرایه یادداشت‌ها
-  const notes = ref([])
-  
-  // بارگذاری یادداشت‌های ذخیره شده از localStorage هنگام mount شدن کامپوننت
-  onMounted(() => {
-    const savedNotes = JSON.parse(localStorage.getItem('notes')) || []
-    // افزودن پراپرتی editing به هر یادداشت (برای حالت ویرایش)
-    notes.value = savedNotes.map(note => ({ ...note, editing: false }))
-  })
-  
-  // ذخیره آرایه یادداشت‌ها در localStorage (بدون پراپرتی editing)
-  function saveNotes() {
-    const notesToSave = notes.value.map(({ editing, ...rest }) => rest)
-    localStorage.setItem('notes', JSON.stringify(notesToSave))
-  }
-  
-  // افزودن یادداشت جدید
-  function addNote() {
-    const text = noteText.value.trim()
-    if (text) {
-      const newNote = {
-        id: Date.now(),
-        text,
-        editing: false
-      }
-      notes.value.push(newNote)
-      saveNotes()
-      noteText.value = ''
+import { ref, onMounted } from 'vue';
+import pb from '@/pb';
+
+// متن ورودی یادداشت
+const noteText = ref('');
+// آرایه یادداشت‌ها
+const notes = ref([]);
+
+// بارگذاری یادداشت‌ها از PocketBase
+const loadNotes = async () => {
+  try {
+    const user = pb.authStore.model;
+    if (!user) throw new Error('کاربر لاگین نکرده است');
+
+    const userId = user.id;
+    if (!userId) throw new Error('شناسه کاربر نامعتبر است');
+    console.log('شناسه کاربر برای بارگذاری یادداشت‌ها:', userId);
+
+    const record = await pb.collection('notes').getFirstListItem(`userId="${userId}"`, {
+      requestKey: null,
+    });
+    console.log('رکورد یادداشت‌ها بارگذاری‌شده:', record);
+
+    notes.value = (record.content || []).map(note => ({ ...note, editing: false }));
+    console.log('داده‌های یادداشت‌ها بارگذاری‌شده:', notes.value);
+  } catch (error) {
+    if (error.status === 404) {
+      notes.value = [];
+      console.log('هیچ رکوردی برای یادداشت‌ها یافت نشد');
+    } else {
+      console.error('خطا در بارگذاری یادداشت‌ها:', error, error.data, error.status);
+      alert('خطا در بارگذاری یادداشت‌ها: ' + (error.message || 'لطفاً دوباره تلاش کنید.'));
     }
   }
-  
-  // حذف یادداشت
-  function deleteNote(id) {
-    notes.value = notes.value.filter(note => note.id !== id)
-    saveNotes()
-  }
-  
-  // تغییر حالت ویرایش/ذخیره برای یک یادداشت
-  function toggleEdit(note) {
-    note.editing = !note.editing
-    if (!note.editing) {
-      // هنگام ذخیره ویرایش، localStorage به‌روزرسانی می‌شود
-      saveNotes()
+};
+
+// ذخیره یادداشت‌ها در PocketBase
+const saveNotes = async () => {
+  try {
+    const user = pb.authStore.model;
+    if (!user) throw new Error('کاربر لاگین نکرده است');
+
+    const userId = user.id;
+    if (!userId) throw new Error('شناسه کاربر نامعتبر است');
+    console.log('شناسه کاربر برای ذخیره یادداشت‌ها:', userId);
+
+    let record;
+    try {
+      record = await pb.collection('notes').getFirstListItem(`userId="${userId}"`, {
+        requestKey: null,
+      });
+      console.log('رکورد موجود یادداشت‌ها:', record);
+    } catch (error) {
+      if (error.status !== 404) throw error;
+      console.log('رکورد جدیدی برای یادداشت‌ها ایجاد خواهد شد');
     }
+
+    const notesToSave = notes.value.map(({ editing, ...rest }) => rest);
+    const data = {
+      userId: userId,
+      content: notesToSave,
+    };
+    console.log('داده ارسالی یادداشت‌ها به PocketBase:', data);
+
+    if (record) {
+      const updatedRecord = await pb.collection('notes').update(record.id, data);
+      console.log('رکورد یادداشت‌ها به‌روزرسانی شد:', updatedRecord);
+    } else {
+      const newRecord = await pb.collection('notes').create(data);
+      console.log('رکورد جدید یادداشت‌ها ایجاد شد:', newRecord);
+    }
+  } catch (error) {
+    console.error('خطا در ذخیره یادداشت‌ها:', error, error.data, error.status);
+    alert('خطا در ذخیره یادداشت‌ها: ' + (error.message || 'لطفاً دوباره تلاش کنید.'));
   }
-  </script>
-  
+};
+
+// افزودن یادداشت جدید
+const addNote = () => {
+  const text = noteText.value.trim();
+  if (!text) {
+    alert('لطفاً متن یادداشت را وارد کنید!');
+    return;
+  }
+  const newNote = {
+    id: Date.now(),
+    text,
+    editing: false,
+  };
+  notes.value.push(newNote);
+  noteText.value = '';
+  saveNotes();
+};
+
+// حذف یادداشت
+const deleteNote = (id) => {
+  notes.value = notes.value.filter(note => note.id !== id);
+  saveNotes();
+};
+
+// تغییر حالت ویرایش/ذخیره برای یک یادداشت
+const toggleEdit = (note) => {
+  note.editing = !note.editing;
+  if (!note.editing) {
+    saveNotes();
+  }
+};
+
+// بارگذاری اولیه یادداشت‌ها
+onMounted(async () => {
+  console.log('وضعیت احراز هویت:', pb.authStore.isValid, pb.authStore.model);
+  await loadNotes();
+});
+</script>

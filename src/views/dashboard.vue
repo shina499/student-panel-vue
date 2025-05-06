@@ -3,7 +3,6 @@
     <section class="g-system">
       <!-- کارت ۱: تحلیل فعالیت هفتگی -->
       <div class="card bg-white rounded-2xl shadow-xl p-6 animate__animated animate__bounceIn w-full max-w-lg">
-        <!-- هدر -->
         <div class="flex items-center justify-between mb-4">
           <h1 class="text-xl font-bold text-purple-600">📊 تحلیل فعالیت هفتگی</h1>
           <div class="flex gap-2">
@@ -11,9 +10,7 @@
             <span class="px-2 py-1 bg-blue-100 text-blue-600 rounded-full text-sm">📅 هفته جاری</span>
           </div>
         </div>
-        <!-- نمودار -->
         <div id="activity-chart"></div>
-        <!-- راهنمای رنگ‌ها -->
         <div class="grid grid-cols-4 gap-2 mt-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 justify-center sm:gap-6 md:gap-2">
           <div class="flex items-center gap-1 justify-center">
             <div class="w-3 h-3 bg-[#6366f1] rounded-full"></div>
@@ -33,36 +30,53 @@
           </div>
         </div>
       </div>
-  
-      <!-- کارت ۲: لیست تکالیف دانش آموزی -->
+
+      <!-- کارت ۲: لیست تکالیف دانش‌آموزی -->
       <div class="card bg-gray-50 rounded-xl animate__animated animate__bounceIn w-full max-w-lg mt-4">
         <div class="container mx-auto p-4">
           <div class="bg-white rounded-lg shadow-lg p-6">
-            <h1 class="text-2xl font-bold text-center mb-6 text-gray-800">لیست تکالیف دانش آموزی</h1>
+            <h1 class="text-2xl font-bold text-center mb-6 text-gray-800">لیست تکالیف دانش‌آموزی</h1>
             <div class="flex gap-2 mb-4">
-              <input 
-                type="text" 
-                id="todoInput" 
+              <input
+                v-model="todoText"
+                type="text"
                 placeholder="تکلیف جدید..."
                 class="flex-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-              <button 
-                id="addBtn"
-                class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"
+              />
+              <button
+                @click="addTodo"
+                class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors animate__animated animate__jackInTheBox"
               >
                 افزودن
               </button>
             </div>
-            <ul id="todoList" class="space-y-2 max-h-[220px] overflow-y-auto pr-2">
-              <!-- آیتم‌های todo اینجا نمایش داده می‌شوند -->
+            <ul class="space-y-2 max-h-[220px] overflow-y-auto pr-2">
+              <li
+                v-for="todo in todos"
+                :key="todo.id"
+                class="flex justify-between items-center bg-gray-50 p-3 rounded-lg hover:bg-gray-100 transition-colors min-h-[72px]"
+              >
+                <div class="flex-1">
+                  <span class="text-gray-800">{{ todo.text }}</span>
+                  <span class="text-xs text-gray-400 block mt-1">{{
+                    new Date(todo.timestamp).toLocaleString('fa-IR')
+                  }}</span>
+                </div>
+                <button
+                  @click="deleteTodo(todo.id)"
+                  class="text-red-500 hover:text-red-700 transition-colors"
+                >
+                  ×
+                </button>
+              </li>
             </ul>
             <div class="mt-4 text-sm text-gray-500 text-center">
-              تعداد تکالیف: <span id="count">0</span>
+              تعداد تکالیف: <span>{{ todos.length }}</span>
             </div>
           </div>
         </div>
       </div>
-  
+
       <!-- کارت ۳: برنامه هفتگی -->
       <div class="card bg-gray-50 flex flex-col items-center justify-center p-4 week w-full max-w-lg mt-4">
         <div class="w-full">
@@ -81,23 +95,36 @@
               </tr>
             </thead>
             <tbody>
-              <!-- ردیف‌ها به صورت دینامیک با JS پر می‌شوند -->
+              <tr v-for="(period, rowIndex) in periods" :key="period">
+                <td class="p-2 font-bold bg-gray-100 text-center">{{ period }}</td>
+                <td
+                  v-for="(day, colIndex) in days"
+                  :key="day"
+                  contenteditable
+                  class="p-2 border border-gray-200 text-center hover:bg-opacity-75 focus:bg-opacity-100"
+                  :class="colors[colIndex % colors.length]"
+                  @input="updateSchedule(rowIndex, colIndex, $event)"
+                >
+                  {{ schedule[rowIndex] && schedule[rowIndex][colIndex] ? schedule[rowIndex][colIndex] : '' }}
+                </td>
+              </tr>
             </tbody>
           </table>
-          <button id="saveBtn" class="mt-4 w-full bg-gradient-to-r from-green-400 to-blue-400 text-white px-4 py-2 rounded-lg hover:from-green-500 hover:to-blue-500 animate__animated animate__fadeIn">
+          <button
+            @click="saveSchedule"
+            class="mt-4 w-full bg-gradient-to-r from-green-400 to-blue-400 text-white px-4 py-2 rounded-lg hover:from-green-500 hover:to-blue-500 animate__animated animate__fadeIn"
+          >
             ذخیره برنامه
           </button>
         </div>
       </div>
-  
+
       <!-- کارت ۴: سیستم تمرکز هوشمند -->
       <div class="card bg-white rounded-2xl shadow-xl p-6 flex flex-col items-center animate__animated animate__bounceIn w-full max-w-lg mt-4">
-        <!-- هدر -->
         <div class="flex items-center gap-3 mb-6">
           <span class="text-4xl">🎯</span>
           <h1 class="text-2xl font-bold text-blue-600">سیستم تمرکز هوشمند</h1>
         </div>
-        <!-- نمایشگر اصلی -->
         <div class="relative">
           <svg width="200" height="200">
             <circle cx="100" cy="100" r="90" fill="none" stroke="#e0e7ff" stroke-width="10"/>
@@ -112,7 +139,6 @@
             <div id="status" class="text-blue-400">آماده</div>
           </div>
         </div>
-        <!-- کنترل‌ها -->
         <div class="flex gap-4 mt-6">
           <button id="startBtn" class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
             ▶ شروع
@@ -121,7 +147,6 @@
             🔄 تنظیم مجدد
           </button>
         </div>
-        <!-- تنظیمات -->
         <div class="grid grid-cols-2 gap-4 mt-6 w-full">
           <div class="bg-blue-50 p-3 rounded-lg">
             <label class="block text-sm text-blue-500 mb-1">مدت مطالعه (دقیقه)</label>
@@ -140,188 +165,240 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue';
+import { ref, reactive, onMounted } from 'vue';
+import pb from '@/pb';
 
-onMounted(() => {
-  // ----------------------- نمودار -----------------------
+// داده‌های ثابت
+const days = ['شنبه', 'یکشنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه'];
+const periods = ['زنگ اول', 'زنگ دوم', 'زنگ سوم', 'زنگ چهارم', 'زنگ پنجم'];
+const colors = ['bg-red-300', 'bg-yellow-300', 'bg-lime-300', 'bg-blue-300', 'bg-fuchsia-300'];
+
+// داده‌های واکنشی برای لیست تکالیف
+const todos = ref([]);
+const todoText = ref('');
+
+// داده‌های واکنشی برای برنامه هفتگی
+const schedule = reactive([]);
+
+// تابع برای بارگذاری لیست تکالیف
+const loadTodos = async () => {
+  try {
+    const user = pb.authStore.model;
+    if (!user) throw new Error('کاربر لاگین نکرده است');
+
+    const userId = user.id;
+    if (!userId) throw new Error('شناسه کاربر نامعتبر است');
+    console.log('شناسه کاربر برای بارگذاری تکالیف:', userId);
+
+    const record = await pb.collection('homework_list').getFirstListItem(`userId="${userId}"`, {
+      requestKey: null,
+    });
+    console.log('رکورد تکالیف بارگذاری‌شده:', record);
+    todos.value = record.content || [];
+    console.log('داده‌های تکالیف بارگذاری‌شده:', todos.value);
+  } catch (error) {
+    if (error.status === 404) {
+      todos.value = [];
+      console.log('هیچ رکوردی برای تکالیف یافت نشد');
+    } else {
+      console.error('خطا در بارگذاری تکالیف:', error, error.data, error.status);
+      alert('خطا در بارگذاری تکالیف: ' + (error.message || 'لطفاً دوباره تلاش کنید.'));
+    }
+  }
+};
+
+// تابع برای ذخیره لیست تکالیف
+const saveTodos = async () => {
+  try {
+    const user = pb.authStore.model;
+    if (!user) throw new Error('کاربر لاگین نکرده است');
+
+    const userId = user.id;
+    if (!userId) throw new Error('شناسه کاربر نامعتبر است');
+    console.log('شناسه کاربر برای ذخیره تکالیف:', userId);
+
+    let record;
+    try {
+      record = await pb.collection('homework_list').getFirstListItem(`userId="${userId}"`, {
+        requestKey: null,
+      });
+      console.log('رکورد موجود تکالیف:', record);
+    } catch (error) {
+      if (error.status !== 404) throw error;
+      console.log('رکورد جدیدی برای تکالیف ایجاد خواهد شد');
+    }
+
+    const data = {
+      userId: userId,
+      content: todos.value,
+    };
+    console.log('داده ارسالی تکالیف به PocketBase:', data);
+
+    if (record) {
+      const updatedRecord = await pb.collection('homework_list').update(record.id, data);
+      console.log('رکورد تکالیف به‌روزرسانی شد:', updatedRecord);
+    } else {
+      const newRecord = await pb.collection('homework_list').create(data);
+      console.log('رکورد جدید تکالیف ایجاد شد:', newRecord);
+    }
+  } catch (error) {
+    console.error('خطا در ذخیره تکالیف:', error, error.data, error.status);
+    alert('خطا در ذخیره تکالیف. لطفاً دوباره تلاش کنید.');
+  }
+};
+
+// تابع برای افزودن تکلیف
+const addTodo = () => {
+  const text = todoText.value.trim();
+  if (!text) {
+    alert('لطفاً متن تکلیف را وارد کنید!');
+    return;
+  }
+  const newTodo = {
+    id: Date.now(),
+    text,
+    timestamp: new Date().toISOString(),
+    completed: false,
+  };
+  todos.value.unshift(newTodo);
+  todoText.value = '';
+  saveTodos();
+};
+
+// تابع برای حذف تکلیف
+const deleteTodo = (id) => {
+  todos.value = todos.value.filter((todo) => todo.id !== id);
+  saveTodos();
+};
+
+// تابع برای بارگذاری برنامه هفتگی
+const loadSchedule = async () => {
+  try {
+    const user = pb.authStore.model;
+    if (!user) throw new Error('کاربر لاگین نکرده است');
+
+    const userId = user.id;
+    if (!userId) throw new Error('شناسه کاربر نامعتبر است');
+    console.log('شناسه کاربر برای بارگذاری برنامه:', userId);
+
+    const record = await pb.collection('weekly_schedule').getFirstListItem(`userId="${userId}"`, {
+      requestKey: null,
+    });
+    console.log('رکورد برنامه بارگذاری‌شده:', record);
+
+    const loadedContent = Array.isArray(record.content) ? record.content : periods.map(() => Array(days.length).fill(''));
+    console.log('داده‌های خام content:', record.content);
+    console.log('داده‌های تنظیم‌شده:', loadedContent);
+
+    while (schedule.length) schedule.pop();
+    loadedContent.forEach(row => schedule.push([...row]));
+    console.log('schedule بعد از تنظیم:', schedule);
+  } catch (error) {
+    if (error.status === 404) {
+      while (schedule.length) schedule.pop();
+      periods.forEach(() => schedule.push(Array(days.length).fill('')));
+      console.log('هیچ رکوردی برای برنامه یافت نشد، برنامه خالی تنظیم شد:', schedule);
+    } else {
+      console.error('خطا در بارگذاری برنامه هفتگی:', error, error.data, error.status);
+      alert('خطا در بارگذاری برنامه هفتگی: ' + (error.message || 'لطفاً دوباره تلاش کنید.'));
+    }
+  }
+};
+
+// تابع برای ذخیره برنامه هفتگی
+const saveSchedule = async () => {
+  try {
+    const user = pb.authStore.model;
+    if (!user) throw new Error('کاربر لاگین نکرده است');
+
+    const userId = user.id;
+    if (!userId) throw new Error('شناسه کاربر نامعتبر است');
+    console.log('شناسه کاربر برای ذخیره برنامه:', userId);
+
+    const validSchedule = schedule.length ? schedule : periods.map(() => Array(days.length).fill(''));
+    console.log('داده‌های برنامه برای ذخیره:', validSchedule);
+
+    const jsonString = JSON.stringify(validSchedule);
+    console.log('JSON برنامه:', jsonString);
+
+    let record;
+    try {
+      record = await pb.collection('weekly_schedule').getFirstListItem(`userId="${userId}"`, {
+        requestKey: null,
+      });
+      console.log('رکورد موجود برنامه:', record);
+    } catch (error) {
+      if (error.status !== 404) throw error;
+      console.log('رکورد جدیدی برای برنامه ایجاد خواهد شد');
+    }
+
+    const data = {
+      userId: userId,
+      content: validSchedule,
+    };
+    console.log('داده ارسالی برنامه به PocketBase:', data);
+
+    if (record) {
+      const updatedRecord = await pb.collection('weekly_schedule').update(record.id, data);
+      console.log('رکورد برنامه به‌روزرسانی شد:', updatedRecord);
+    } else {
+      const newRecord = await pb.collection('weekly_schedule').create(data);
+      console.log('رکورد جدید برنامه ایجاد شد:', newRecord);
+    }
+    alert('برنامه با موفقیت ذخیره شد!');
+  } catch (error) {
+    console.error('خطا در ذخیره برنامه:', error, error.data, error.status);
+    alert('خطا در ذخیره برنامه: ' + (error.message || 'لطفاً دوباره تلاش کنید.'));
+  }
+};
+
+// تابع برای به‌روزرسانی برنامه هفتگی
+const updateSchedule = (rowIndex, colIndex, event) => {
+  if (!schedule[rowIndex]) {
+    schedule[rowIndex] = Array(days.length).fill('');
+  }
+  schedule[rowIndex][colIndex] = event.target.textContent;
+  console.log('schedule بعد از به‌روزرسانی:', schedule);
+};
+
+// بارگذاری اولیه داده‌ها
+onMounted(async () => {
+  console.log('وضعیت احراز هویت:', pb.authStore.isValid, pb.authStore.model);
+
+  // نمودار
   const chartOptions = {
-    series: [{
-      name: 'مطالعه',
-      data: [3, 4, 2, 5, 4, 6, 2]
-    }, {
-      name: 'ورزش',
-      data: [1, 2, 1, 3, 1, 2, 1]
-    }, {
-      name: 'سرگرمی',
-      data: [2, 3, 1, 4, 2, 3, 1]
-    }, {
-      name: 'استراحت',
-      data: [8, 7, 9, 6, 8, 7, 9]
-    }],
+    series: [
+      { name: 'مطالعه', data: [3, 4, 2, 5, 4, 6, 2] },
+      { name: 'ورزش', data: [1, 2, 1, 3, 1, 2, 1] },
+      { name: 'سرگرمی', data: [2, 3, 1, 4, 2, 3, 1] },
+      { name: 'استراحت', data: [8, 7, 9, 6, 8, 7, 9] },
+    ],
     chart: {
       type: 'bar',
       height: 320,
       stacked: true,
       toolbar: { show: false },
-      fontFamily: 'Vazirmatn'
+      fontFamily: 'Vazirmatn',
     },
     colors: ['#6366f1', '#10b981', '#f59e0b', '#ef4444'],
     plotOptions: {
-      bar: {
-        borderRadius: 8,
-        columnWidth: '60%',
-        dataLabels: { position: 'top' }
-      }
+      bar: { borderRadius: 8, columnWidth: '60%', dataLabels: { position: 'top' } },
     },
-    dataLabels: {
-      enabled: true,
-      formatter: (val) => val + "h",
-      style: { fontSize: '12px' }
-    },
-    xaxis: {
-      categories: ['شنبه', 'یکشنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنج‌شنبه', 'جمعه'],
-      labels: { style: { fontSize: '14px' } }
-    },
-    yaxis: {
-      max: 24,
-      labels: { formatter: (val) => val + "h" }
-    },
+    dataLabels: { enabled: true, formatter: (val) => val + 'h', style: { fontSize: '12px' } },
+    xaxis: { categories: ['شنبه', 'یکشنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنج‌شنبه', 'جمعه'], labels: { style: { fontSize: '14px' } } },
+    yaxis: { max: 24, labels: { formatter: (val) => val + 'h' } },
     legend: { show: false },
-    tooltip: {
-      y: { formatter: (val) => val + " ساعت" },
-      style: { fontFamily: 'Vazirmatn' }
-    },
-    responsive: [{
-      breakpoint: 480,
-      options: { plotOptions: { bar: { columnWidth: '70%' } } }
-    }]
+    tooltip: { y: { formatter: (val) => val + ' ساعت' }, style: { fontFamily: 'Vazirmatn' } },
+    responsive: [{ breakpoint: 480, options: { plotOptions: { bar: { columnWidth: '70%' } } } }],
   };
-  const chart = new ApexCharts(document.querySelector("#activity-chart"), chartOptions);
+  const chart = new ApexCharts(document.querySelector('#activity-chart'), chartOptions);
   chart.render();
 
-  // ----------------------- لیست تکالیف -----------------------
-  let todos = JSON.parse(localStorage.getItem('todos')) || [];
-  const todoInput = document.getElementById('todoInput');
-  const todoList = document.getElementById('todoList');
-  const countSpan = document.getElementById('count');
-  const addBtn = document.getElementById('addBtn');
+  // بارگذاری داده‌ها از PocketBase
+  await loadTodos();
+  await loadSchedule();
 
-  const updateLocalStorage = () => {
-    localStorage.setItem('todos', JSON.stringify(todos));
-    countSpan.innerText = todos.length;
-  };
-
-  const createTodoElement = (todo) => {
-    const li = document.createElement('li');
-    li.className = 'flex justify-between items-center bg-gray-50 p-3 rounded-lg hover:bg-gray-100 transition-colors min-h-[72px]';
-    li.innerHTML = `
-      <div class="flex-1">
-        <span class="text-gray-800">${todo.text}</span>
-        <span class="text-xs text-gray-400 block mt-1">${new Date(todo.timestamp).toLocaleString('fa-IR')}</span>
-      </div>
-      <button class="delete-btn text-red-500 hover:text-red-700 transition-colors" data-id="${todo.id}">
-        ×
-      </button>
-    `;
-    return li;
-  };
-
-  const renderTodos = () => {
-    todoList.innerHTML = '';
-    todos.forEach(todo => {
-      const todoElement = createTodoElement(todo);
-      todoList.appendChild(todoElement);
-    });
-  };
-
-  const addTodo = () => {
-    const text = todoInput.value.trim();
-    if (!text) {
-      alert('لطفا متن تکلیف را وارد کنید!');
-      todoInput.focus();
-      return;
-    }
-    const newTodo = {
-      id: Date.now(),
-      text: text,
-      timestamp: new Date().toISOString(),
-      completed: false
-    };
-    addBtn.classList.add("animate__animated", "animate__jackInTheBox");
-    todos.unshift(newTodo);
-    todoInput.value = '';
-    renderTodos();
-    updateLocalStorage();
-  };
-
-  const deleteTodo = (id) => {
-    todos = todos.filter(todo => todo.id !== id);
-    renderTodos();
-    updateLocalStorage();
-  };
-
-  addBtn.addEventListener('click', addTodo);
-  todoInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') addTodo();
-  });
-  document.addEventListener('click', (e) => {
-    if (e.target.classList.contains('delete-btn')) {
-      const id = Number(e.target.dataset.id);
-      deleteTodo(id);
-    }
-  });
-  renderTodos();
-  updateLocalStorage();
-
-  // ----------------------- برنامه هفتگی -----------------------
-  const days = ['شنبه', 'یکشنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه'];
-  const periods = ['زنگ اول', 'زنگ دوم', 'زنگ سوم', 'زنگ چهارم', 'زنگ پنجم'];
-  const tableBody = document.querySelector('#schedule tbody');
-  const colors = ['bg-red-300', 'bg-yellow-300', 'bg-lime-300', 'bg-blue-300', 'bg-fuchsia-300'];
-
-  periods.forEach((period) => {
-    const row = document.createElement('tr');
-    const periodCell = document.createElement('td');
-    periodCell.textContent = period;
-    periodCell.classList.add('p-2', 'font-bold', 'bg-gray-100', 'text-center');
-    row.appendChild(periodCell);
-
-    days.forEach((day, index) => {
-      const cell = document.createElement('td');
-      cell.contentEditable = true;
-      cell.classList.add('p-2', 'border', 'border-gray-200', 'text-center', 'hover:bg-opacity-75', 'focus:bg-opacity-100', colors[index % colors.length], 'animate__animated', 'animate__fadeIn');
-      row.appendChild(cell);
-    });
-    tableBody.appendChild(row);
-  });
-
-  document.getElementById('saveBtn').addEventListener('click', function () {
-    const schedule = [];
-    tableBody.querySelectorAll('tr').forEach(row => {
-      const rowData = [];
-      row.querySelectorAll('td').forEach((cell, index) => {
-        if (index !== 0) {
-          rowData.push(cell.textContent);
-        }
-      });
-      schedule.push(rowData);
-    });
-    localStorage.setItem('weeklySchedule', JSON.stringify(schedule));
-    alert('برنامه با موفقیت ذخیره شد!');
-  });
-
-  const savedSchedule = JSON.parse(localStorage.getItem('weeklySchedule'));
-  if (savedSchedule) {
-    tableBody.querySelectorAll('tr').forEach((row, rowIndex) => {
-      row.querySelectorAll('td').forEach((cell, cellIndex) => {
-        if (cellIndex !== 0) {
-          cell.textContent = savedSchedule[rowIndex][cellIndex - 1];
-        }
-      });
-    });
-  }
-
-  // ----------------------- هشدار تمرکز -----------------------
+  // سیستم تمرکز هوشمند
   class FocusTimer {
     constructor() {
       this.timer = null;
@@ -337,7 +414,7 @@ onMounted(() => {
         resetBtn: document.getElementById('resetBtn'),
         studyInput: document.getElementById('studyTime'),
         breakInput: document.getElementById('breakTime'),
-        progressCircle: document.querySelector('.progress-ring__circle')
+        progressCircle: document.querySelector('.progress-ring__circle'),
       };
       this.init();
     }
@@ -385,13 +462,13 @@ onMounted(() => {
     updateDisplay(seconds) {
       const mins = Math.floor(seconds / 60).toString().padStart(2, '0');
       const secs = (seconds % 60).toString().padStart(2, '0');
-      this.ui.time.textContent = `${mins}:${secs}`.replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
+      this.ui.time.textContent = `${mins}:${secs}`.replace(/\d/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[d]);
       this.updateProgress((this.currentTime / this.totalTime) * 100);
     }
     updateProgress(percent) {
       if (isNaN(percent)) percent = 0;
       const circumference = 565.48;
-      const offset = circumference - (percent / 100 * circumference);
+      const offset = circumference - (percent / 100) * circumference;
       this.ui.progressCircle.style.strokeDashoffset = offset;
     }
     handleComplete() {
@@ -423,7 +500,7 @@ onMounted(() => {
     updateSettings() {
       this.settings = {
         study: parseInt(this.ui.studyInput.value) || 25,
-        break: parseInt(this.ui.breakInput.value) || 5
+        break: parseInt(this.ui.breakInput.value) || 5,
       };
       localStorage.setItem('focusSettings', JSON.stringify(this.settings));
       this.totalTime = this.isBreakTime ? this.settings.break * 60 : this.settings.study * 60;
@@ -453,19 +530,19 @@ onMounted(() => {
   display: grid;
   gap: 1.5rem;
   width: 100%;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* تغییر به grid auto-fill */
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 }
 
 @media (max-width: 899px) {
   .g-system {
-    grid-template-columns: 1fr; /* برای گوشی‌های کوچک: یک ستون */
-    justify-items: center; /* هر کارت داخل گرید وسط */
+    grid-template-columns: 1fr;
+    justify-items: center;
   }
 }
 
 @media (min-width: 900px) {
   .g-system {
-    grid-template-columns: repeat(2, 1fr); /* برای تبلت‌ها: دو ستون */
+    grid-template-columns: repeat(2, 1fr);
     max-width: 1000px;
     margin: 0 auto;
     justify-items: center;
@@ -508,4 +585,3 @@ onMounted(() => {
   }
 }
 </style>
-

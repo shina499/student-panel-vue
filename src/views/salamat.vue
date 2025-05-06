@@ -119,7 +119,7 @@
           </button>
         </div>
         <ul class="space-y-2">
-          <li v-for="(entry, index) in sleepHistory" :key="index" class="flex items-center justify-between bg-white p-2 rounded">
+          <li v-for="entry in sleepHistory" :key="entry.id" class="flex items-center justify-between bg-white p-2 rounded">
             <div class="flex items-center gap-2">
               <span class="text-purple-400">⭐</span>
               <span>{{ entry.date }}</span>
@@ -202,13 +202,13 @@
             <button @click="addGoal" class="p-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600">➕</button>
           </div>
           <div class="space-y-2">
-            <div v-for="(goal, index) in goals" :key="index" class="flex items-center gap-4">
+            <div v-for="goal in goals" :key="goal.id" class="flex items-center gap-4">
               <input type="text" :value="goal.text" class="w-full p-2 border-2 border-purple-300 rounded-lg" readonly />
               <input type="date" :value="goal.date" class="p-2 border-2 border-purple-300 rounded-lg" readonly />
-              <button @click="toggleGoal(index)" class="p-2 bg-purple-500 text-white rounded-lg">
+              <button @click="toggleGoal(goal.id)" class="p-2 bg-purple-500 text-white rounded-lg">
                 {{ goal.completed ? '✅' : '⬜' }}
               </button>
-              <button @click="deleteGoal(index)" class="p-2 bg-red-500 text-white rounded-lg">🗑️</button>
+              <button @click="deleteGoal(goal.id)" class="p-2 bg-red-500 text-white rounded-lg">🗑️</button>
             </div>
           </div>
         </div>
@@ -244,446 +244,684 @@
   </section>
 </template>
 
-<script>
-  export default {
-    name: 'Dashboard',
-    data() {
-      return {
-        // Water Tracker
-        waterData: {
-          count: 0,
-          date: new Date().toLocaleDateString('fa-IR')
-        },
-        // Exercise Tracker
-        timer: {
-          isRunning: false,
-          startTime: 0,
-          elapsedTime: 0,
-          interval: null
-        },
-        workoutHistory: [],
-        formattedTime: '۰۰:۰۰:۰۰',
-        // Sleep Tracker
-        bedtime: '',
-        waketime: '',
-        sleepDuration: '۰ ساعت ۰ دقیقه',
-        sleepHistory: [],
-        // Mood Tracker
-        moodData: { entries: [] },
-        todayDate: new Date().toLocaleDateString('fa-IR'),
-        // Goals Tracker
-        goals: [],
-        newGoal: { text: '', date: '', completed: false },
-        progressChart: null,
-        // Weekly Tasks
-        daysOfWeek: ['شنبه', 'یک‌شنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنج‌شنبه'],
-        weeklyTasks: {},
-        newTask: {} // مدل داینامیک برای ورودی هر روز
-      };
-    },
-    computed: {
-      progressPercentage() {
-        const completed = this.goals.filter(g => g.completed).length;
-        return this.goals.length > 0 ? Math.round((completed / this.goals.length) * 100) : 0;
-      },
-      moodCounts() {
-        return this.moodData.entries.reduce((acc, entry) => {
-          acc[entry.mood] = (acc[entry.mood] || 0) + 1;
-          return acc;
-        }, {});
-      },
-      bestDay() {
-        const days = {};
-        this.moodData.entries.forEach(entry => {
-          const date = new Date(entry.date).toLocaleDateString('fa-IR');
-          days[date] = (days[date] || 0) + 1;
-        });
-        const bestDay = Object.entries(days).reduce((a, b) => b[1] > a[1] ? b : a, [null, 0]);
-        return bestDay[0] || '---';
-      }
-    },
-    mounted() {
-      this.loadData();
-      this.initializeWeeklyTasks();
-      this.initProgressChart();
-    },
-    beforeUnmount() {
-      if (this.progressChart) {
-        this.progressChart.destroy();
-      }
-    },
-    methods: {
-      // Water Tracker Methods
-      loadWaterData() {
-        const savedData = localStorage.getItem('waterData');
-        if (savedData) {
-          this.waterData = JSON.parse(savedData);
-          if (new Date().toLocaleDateString('fa-IR') !== this.waterData.date) {
-            this.resetCount();
-          }
-        }
-      },
-      saveWaterData() {
-        localStorage.setItem('waterData', JSON.stringify(this.waterData));
-      },
-      changeCount(amount) {
-        if (new Date().toLocaleDateString('fa-IR') !== this.waterData.date) {
-          this.waterData.count = 0;
-          this.waterData.date = new Date().toLocaleDateString('fa-IR');
-        }
-        this.waterData.count = Math.max(0, this.waterData.count + amount);
-        this.saveWaterData();
-      },
-      resetCount() {
-        this.waterData = {
-          count: 0,
-          date: new Date().toLocaleDateString('fa-IR')
-        };
-        this.saveWaterData();
-      },
-      getStatusText() {
-        if (this.waterData.count === 0) {
-          return '😴 هنوز شروع نکردی!';
-        } else if (this.waterData.count < 4) {
-          return '💪 ادامه بده!';
-        } else if (this.waterData.count < 8) {
-          return '🎯 عالی پیش میری!';
-        } else {
-          return '🎉 هدف امروز تکمیل شد!';
-        }
-      },
-      // Exercise Tracker Methods
-      loadWorkoutHistory() {
-        this.workoutHistory = JSON.parse(localStorage.getItem('workoutHistory')) || [];
-      },
-      saveWorkoutHistory() {
-        localStorage.setItem('workoutHistory', JSON.stringify(this.workoutHistory));
-      },
-      toggleTimer() {
-        if (!this.timer.isRunning) {
-          this.startTimer();
-        } else {
-          this.stopTimer();
-        }
-      },
-      startTimer() {
-        this.timer.startTime = Date.now() - this.timer.elapsedTime;
-        this.timer.interval = setInterval(this.updateTimerDisplay, 1000);
-        this.timer.isRunning = true;
-      },
-      stopTimer() {
-        clearInterval(this.timer.interval);
-        this.timer.elapsedTime = Date.now() - this.timer.startTime;
-        this.timer.isRunning = false;
-      },
-      updateTimerDisplay() {
-        const totalSeconds = Math.floor((Date.now() - this.timer.startTime) / 1000);
-        const hours = Math.floor(totalSeconds / 3600).toString().padStart(2, '۰');
-        const minutes = Math.floor((totalSeconds % 3600) / 60).toString().padStart(2, '۰');
-        const seconds = (totalSeconds % 60).toString().padStart(2, '۰');
-        this.formattedTime = `${hours}:${minutes}:${seconds}`;
-      },
-      saveWorkout() {
-        if (this.timer.elapsedTime > 0) {
-          const workout = {
-            id: Date.now(),
-            duration: Math.floor(this.timer.elapsedTime / 1000),
-            date: new Date().toLocaleDateString('fa-IR'),
-            calories: Math.floor(this.timer.elapsedTime / 1000 * 0.1)
-          };
-          this.workoutHistory.unshift(workout);
-          if (this.workoutHistory.length > 7) {
-            this.workoutHistory.pop();
-          }
-          this.saveWorkoutHistory();
-          this.resetTimer();
-        }
-      },
-      deleteWorkout(id) {
-        this.workoutHistory = this.workoutHistory.filter(workout => workout.id !== id);
-        this.saveWorkoutHistory();
-      },
-      clearHistory() {
-        this.workoutHistory = [];
-        localStorage.removeItem('workoutHistory');
-      },
-      resetTimer() {
-        clearInterval(this.timer.interval);
-        this.timer = {
-          isRunning: false,
-          startTime: 0,
-          elapsedTime: 0,
-          interval: null
-        };
-        this.formattedTime = '۰۰:۰۰:۰۰';
-      },
-      // Sleep Tracker Methods
-      loadSleepHistory() {
-        this.sleepHistory = JSON.parse(localStorage.getItem('sleepHistory')) || [];
-      },
-      saveSleepHistory() {
-        localStorage.setItem('sleepHistory', JSON.stringify(this.sleepHistory));
-      },
-      calculateSleep() {
-        if (!this.bedtime || !this.waketime) return;
-        const [bedHour, bedMin] = this.bedtime.split(':').map(Number);
-        const [wakeHour, wakeMin] = this.waketime.split(':').map(Number);
-        let diffHours = wakeHour - bedHour;
-        let diffMinutes = wakeMin - bedMin;
-        if (diffMinutes < 0) {
-          diffHours--;
-          diffMinutes += 60;
-        }
-        if (diffHours < 0) diffHours += 24;
-        this.sleepDuration = `${diffHours} ساعت ${diffMinutes} دقیقه`;
-        this.saveSleepHistoryEntry({
-          date: new Date().toLocaleDateString('fa-IR'),
-          duration: `${diffHours}h ${diffMinutes}m`,
-          bedtime: this.bedtime,
-          waketime: this.waketime
-        });
-      },
-      saveSleepHistoryEntry(entry) {
-        this.sleepHistory.unshift(entry);
-        if (this.sleepHistory.length > 7) {
-          this.sleepHistory.pop();
-        }
-        this.saveSleepHistory();
-      },
-      clearSleepHistory() {
-        this.sleepHistory = [];
-        localStorage.removeItem('sleepHistory');
-      },
-      // Mood Tracker Methods
-      loadMoodData() {
-        this.moodData = JSON.parse(localStorage.getItem('moodData')) || { entries: [] };
-      },
-      saveMoodData() {
-        localStorage.setItem('moodData', JSON.stringify(this.moodData));
-      },
-      addMoodEntry(mood) {
-        this.moodData.entries.push({ date: new Date().toISOString(), mood });
-        this.saveMoodData();
-      },
-      resetMoodData() {
-        if (confirm('آیا از پاک کردن تمام داده‌ها اطمینان دارید؟')) {
-          this.moodData = { entries: [] };
-          localStorage.removeItem('moodData');
-        }
-      },
-      getMoodIcon(mood) {
-        const icons = { happy: '😊', sad: '😢', angry: '😠' };
-        return icons[mood] || '❓';
-      },
-      getMoodColor(mood) {
-        const colors = { happy: 'bg-green-500', sad: 'bg-blue-500', angry: 'bg-red-500' };
-        return colors[mood] || 'bg-gray-400';
-      },
-      // Goals Tracker Methods
-      loadGoals() {
-        this.goals = JSON.parse(localStorage.getItem('goals')) || [];
-      },
-      saveGoals() {
-        localStorage.setItem('goals', JSON.stringify(this.goals));
-      },
-      addGoal() {
-        if (this.newGoal.text.trim() === '' || this.newGoal.date === '') {
-          alert('لطفاً هدف و تاریخ را وارد کنید!');
-          return;
-        }
-        this.goals.push({ ...this.newGoal });
-        this.saveGoals();
-        this.newGoal = { text: '', date: '', completed: false };
-        this.updateProgressChart();
-      },
-      toggleGoal(index) {
-        this.goals[index].completed = !this.goals[index].completed;
-        this.saveGoals();
-        this.updateProgressChart();
-      },
-      deleteGoal(index) {
-        this.goals.splice(index, 1);
-        this.saveGoals();
-        this.updateProgressChart();
-      },
-      initProgressChart() {
-        this.progressChart = new ApexCharts(document.querySelector("#progressChart"), {
-          chart: {
-            type: 'donut',
-            height: '100%',
-            width: '100%',
-            animations: {
-              enabled: true,
-              easing: 'easeinout',
-              speed: 800
-            }
-          },
-          series: [0, 100],
-          colors: ['#8B5CF6', '#EDE9FE'],
-          labels: ['پیشرفت', 'باقیمانده'],
-          plotOptions: {
-            pie: {
-              donut: {
-                size: '75%',
-                labels: {
-                  show: false
-                }
-              }
-            }
-          },
-          dataLabels: {
-            enabled: false
-          },
-          legend: {
-            show: false
-          },
-          tooltip: {
-            enabled: false
-          },
-          responsive: [{
-            breakpoint: 480,
-            options: {
-              chart: {
-                width: 200
-              }
-            }
-          }]
-        });
-  
-        this.progressChart.render();
-        this.updateProgressChart();
-      },
-      updateProgressChart() {
-        const completed = this.goals.filter(g => g.completed).length;
-        const progress = this.goals.length > 0 ? Math.round((completed / this.goals.length) * 100) : 0;
-        const remaining = 100 - progress;
-        this.progressChart.updateSeries([progress, remaining]);
-      },
-      // Weekly Tasks Methods
-      initializeWeeklyTasks() {
-        this.daysOfWeek.forEach(day => {
-          this.weeklyTasks[day] = [];
-          this.newTask[day] = "";
-        });
-        this.loadWeeklyTasks();
-      },
-      loadWeeklyTasks() {
-        const savedTasks = localStorage.getItem('weeklyTasks');
-        if (savedTasks) {
-          this.weeklyTasks = JSON.parse(savedTasks);
-          // اطمینان از وجود کلید برای هر روز
-          this.daysOfWeek.forEach(day => {
-            if (!this.weeklyTasks[day]) {
-              this.weeklyTasks[day] = [];
-            }
-          });
-        }
-      },
-      saveWeeklyTasks() {
-        localStorage.setItem('weeklyTasks', JSON.stringify(this.weeklyTasks));
-      },
-      addTask(day) {
-        if (this.newTask[day].trim()) {
-          this.weeklyTasks[day].push(this.newTask[day]);
-          this.newTask[day] = "";
-          this.saveWeeklyTasks();
-        }
-      },
-      removeTask(day, index) {
-        this.weeklyTasks[day].splice(index, 1);
-        this.saveWeeklyTasks();
-      },
-      // General Methods
-      loadData() {
-        this.loadWaterData();
-        this.loadWorkoutHistory();
-        this.loadSleepHistory();
-        this.loadMoodData();
-        this.loadGoals();
-      }
+<script setup>
+import { ref, computed, onMounted, onUnmounted } from 'vue';
+import pb from '@/pb';
+
+// -------------------- عمومی --------------------
+const todayDate = new Date().toLocaleDateString('fa-IR');
+
+// -------------------- ردیاب آب --------------------
+const waterData = ref({
+  count: 0,
+  date: todayDate,
+});
+
+const loadWaterData = async () => {
+  try {
+    const user = pb.authStore.model;
+    if (!user) throw new Error('کاربر لاگین نکرده است');
+    const userId = user.id;
+    console.log('بارگذاری داده‌های آب:', userId);
+
+    const record = await pb.collection('water_tracker').getFirstListItem(`userId="${userId}"`, {
+      requestKey: null,
+    });
+    waterData.value = record.content || { count: 0, date: todayDate };
+    console.log('داده‌های آب بارگذاری شد:', waterData.value);
+
+    if (waterData.value.date !== todayDate) {
+      resetCount();
     }
+  } catch (error) {
+    if (error.status === 404) {
+      waterData.value = { count: 0, date: todayDate };
+      console.log('رکورد آب یافت نشد، مقدار پیش‌فرض تنظیم شد');
+    } else {
+      console.error('خطا در بارگذاری آب:', error);
+      alert('خطا در بارگذاری داده‌های آب: ' + (error.message || 'دوباره تلاش کنید'));
+    }
+  }
+};
+
+const saveWaterData = async () => {
+  try {
+    const user = pb.authStore.model;
+    if (!user) throw new Error('کاربر لاگین نکرده است');
+    const userId = user.id;
+    console.log('ذخیره داده‌های آب:', userId);
+
+    let record;
+    try {
+      record = await pb.collection('water_tracker').getFirstListItem(`userId="${userId}"`, {
+        requestKey: null,
+      });
+    } catch (error) {
+      if (error.status !== 404) throw error;
+    }
+
+    const data = { userId, content: waterData.value };
+    if (record) {
+      await pb.collection('water_tracker').update(record.id, data);
+      console.log('داده‌های آب به‌روزرسانی شد');
+    } else {
+      await pb.collection('water_tracker').create(data);
+      console.log('رکورد جدید آب ایجاد شد');
+    }
+  } catch (error) {
+    console.error('خطا در ذخیره آب:', error);
+    alert('خطا در ذخیره داده‌های آب: ' + (error.message || 'دوباره تلاش کنید'));
+  }
+};
+
+const changeCount = (amount) => {
+  if (waterData.value.date !== todayDate) {
+    waterData.value.count = 0;
+    waterData.value.date = todayDate;
+  }
+  waterData.value.count = Math.max(0, waterData.value.count + amount);
+  saveWaterData();
+};
+
+const resetCount = () => {
+  waterData.value = { count: 0, date: todayDate };
+  saveWaterData();
+};
+
+const getStatusText = () => {
+  if (waterData.value.count === 0) return '😴 هنوز شروع نکردی!';
+  if (waterData.value.count < 4) return '💪 ادامه بده!';
+  if (waterData.value.count < 8) return '🎯 عالی پیش میری!';
+  return '🎉 هدف امروز تکمیل شد!';
+};
+
+// -------------------- ردیاب ورزش --------------------
+const timer = ref({
+  isRunning: false,
+  startTime: 0,
+  elapsedTime: 0,
+  interval: null,
+});
+const workoutHistory = ref([]);
+const formattedTime = ref('۰۰:۰۰:۰۰');
+
+const loadWorkoutHistory = async () => {
+  try {
+    const user = pb.authStore.model;
+    if (!user) throw new Error('کاربر لاگین نکرده است');
+    const userId = user.id;
+    console.log('بارگذاری تاریخچه ورزش:', { userId });
+
+    const record = await pb.collection('exercise_manage').getFirstListItem(`userId="${userId}"`, {
+      requestKey: null,
+    });
+    const content = record.content || [];
+    // اعتبارسنجی داده‌ها
+    workoutHistory.value = Array.isArray(content)
+      ? content.filter(item => item && item.id && item.duration && item.date && item.calories)
+      : [];
+    console.log('تاریخچه ورزش بارگذاری شد:', workoutHistory.value);
+  } catch (error) {
+    if (error.status === 404) {
+      workoutHistory.value = [];
+      console.log('رکورد ورزش یافت نشد، مقدار پیش‌فرض تنظیم شد');
+    } else {
+      console.error('خطا در بارگذاری تاریخچه ورزش:', {
+        message: error.message,
+        status: error.status,
+        data: error.data,
+      });
+      alert('خطا در بارگذاری تاریخچه ورزش: ' + (error.message || 'لطفاً دوباره تلاش کنید'));
+    }
+  }
+};
+
+const saveWorkoutHistory = async () => {
+  try {
+    const user = pb.authStore.model;
+    if (!user) throw new Error('کاربر لاگین نکرده است');
+    const userId = user.id;
+    console.log('ذخیره تاریخچه ورزش:', { userId, workoutHistory: workoutHistory.value });
+
+    let record;
+    try {
+      record = await pb.collection('exercise_manage').getFirstListItem(`userId="${userId}"`, {
+        requestKey: null,
+      });
+    } catch (error) {
+      if (error.status !== 404) throw error;
+    }
+
+    const data = { userId, content: workoutHistory.value };
+    if (record) {
+      await pb.collection('exercise_manage').update(record.id, data);
+      console.log('تاریخچه ورزش به‌روزرسانی شد:', { recordId: record.id });
+    } else {
+      const newRecord = await pb.collection('exercise_manage').create(data);
+      console.log('رکورد جدید ورزش ایجاد شد:', { recordId: newRecord.id });
+    }
+  } catch (error) {
+    console.error('خطا در ذخیره تاریخچه ورزش:', {
+      message: error.message,
+      status: error.status,
+      data: error.data,
+    });
+    alert('خطا در ذخیره تاریخچه ورزش: ' + (error.message || 'لطفاً دوباره تلاش کنید'));
+  }
+};
+
+const toggleTimer = () => {
+  if (!timer.value.isRunning) {
+    startTimer();
+  } else {
+    stopTimer();
+  }
+};
+
+const startTimer = () => {
+  // جلوگیری از اجرای چند interval همزمان
+  if (timer.value.interval) {
+    clearInterval(timer.value.interval);
+  }
+  timer.value.startTime = Date.now() - timer.value.elapsedTime;
+  timer.value.interval = setInterval(() => {
+    const totalSeconds = Math.floor((Date.now() - timer.value.startTime) / 1000);
+    const hours = Math.floor(totalSeconds / 3600).toString().padStart(2, '۰');
+    const minutes = Math.floor((totalSeconds % 3600) / 60).toString().padStart(2, '۰');
+    const seconds = (totalSeconds % 60).toString().padStart(2, '۰');
+    formattedTime.value = `${hours}:${minutes}:${seconds}`;
+  }, 1000);
+  timer.value.isRunning = true;
+  console.log('تایمر شروع شد:', { startTime: timer.value.startTime });
+};
+
+const stopTimer = () => {
+  if (timer.value.interval) {
+    clearInterval(timer.value.interval);
+    timer.value.interval = null;
+  }
+  timer.value.elapsedTime = Date.now() - timer.value.startTime;
+  timer.value.isRunning = false;
+  console.log('تایمر متوقف شد:', { elapsedTime: timer.value.elapsedTime });
+};
+
+const saveWorkout = async () => {
+  if (timer.value.elapsedTime <= 0) {
+    alert('لطفاً تایمر را شروع کنید و مدت زمانی را ثبت کنید!');
+    return;
+  }
+  try {
+    const workout = {
+      id: Date.now().toString(),
+      duration: Math.floor(timer.value.elapsedTime / 1000),
+      date: todayDate,
+      calories: Math.floor(timer.value.elapsedTime / 1000 * 0.1),
+    };
+    workoutHistory.value.unshift(workout);
+    if (workoutHistory.value.length > 7) {
+      workoutHistory.value.pop();
+    }
+    await saveWorkoutHistory();
+    resetTimer();
+    console.log('ورزش ذخیره شد:', workout);
+  } catch (error) {
+    console.error('خطا در ذخیره ورزش:', {
+      message: error.message,
+      status: error.status,
+      data: error.data,
+    });
+    alert('خطا در ذخیره ورزش: ' + (error.message || 'لطفاً دوباره تلاش کنید'));
+  }
+};
+
+const deleteWorkout = async (id) => {
+  workoutHistory.value = workoutHistory.value.filter(workout => workout.id !== id);
+  await saveWorkoutHistory();
+  console.log('ورزش حذف شد:', { id });
+};
+
+const clearHistory = async () => {
+  workoutHistory.value = [];
+  await saveWorkoutHistory();
+  console.log('تاریخچه ورزش پاک شد');
+};
+
+const resetTimer = () => {
+  if (timer.value.interval) {
+    clearInterval(timer.value.interval);
+    timer.value.interval = null;
+  }
+  timer.value = {
+    isRunning: false,
+    startTime: 0,
+    elapsedTime: 0,
+    interval: null,
   };
+  formattedTime.value = '۰۰:۰۰:۰۰';
+  console.log('تایمر ریست شد');
+};
+
+// -------------------- ردیاب خواب --------------------
+const bedtime = ref('');
+const waketime = ref('');
+const sleepDuration = ref('۰ ساعت ۰ دقیقه');
+const sleepHistory = ref([]);
+
+const loadSleepHistory = async () => {
+  try {
+    const user = pb.authStore.model;
+    if (!user) throw new Error('کاربر لاگین نکرده است');
+    const userId = user.id;
+    console.log('بارگذاری تاریخچه خواب:', userId);
+
+    const record = await pb.collection('sleep_tracker').getFirstListItem(`userId="${userId}"`, {
+      requestKey: null,
+    });
+    sleepHistory.value = record.content || [];
+    console.log('تاریخچه خواب بارگذاری شد:', sleepHistory.value);
+  } catch (error) {
+    if (error.status === 404) {
+      sleepHistory.value = [];
+      console.log('رکورد خواب یافت نشد');
+    } else {
+      console.error('خطا در بارگذاری خواب:', error);
+      alert('خطا در بارگذاری تاریخچه خواب: ' + (error.message || 'دوباره تلاش کنید'));
+    }
+  }
+};
+
+const saveSleepHistory = async () => {
+  try {
+    const user = pb.authStore.model;
+    if (!user) throw new Error('کاربر لاگین نکرده است');
+    const userId = user.id;
+    console.log('ذخیره تاریخچه خواب:', userId);
+
+    let record;
+    try {
+      record = await pb.collection('sleep_tracker').getFirstListItem(`userId="${userId}"`, {
+        requestKey: null,
+      });
+    } catch (error) {
+      if (error.status !== 404) throw error;
+    }
+
+    const data = { userId, content: sleepHistory.value };
+    if (record) {
+      await pb.collection('sleep_tracker').update(record.id, data);
+      console.log('تاریخچه خواب به‌روزرسانی شد');
+    } else {
+      await pb.collection('sleep_tracker').create(data);
+      console.log('رکورد جدید خواب ایجاد شد');
+    }
+  } catch (error) {
+    console.error('خطا در ذخیره خواب:', error);
+    alert('خطا در ذخیره تاریخچه خواب: ' + (error.message || 'دوباره تلاش کنید'));
+  }
+};
+
+const calculateSleep = () => {
+  if (!bedtime.value || !waketime.value) return;
+  const [bedHour, bedMin] = bedtime.value.split(':').map(Number);
+  const [wakeHour, wakeMin] = waketime.value.split(':').map(Number);
+  let diffHours = wakeHour - bedHour;
+  let diffMinutes = wakeMin - bedMin;
+  if (diffMinutes < 0) {
+    diffHours--;
+    diffMinutes += 60;
+  }
+  if (diffHours < 0) diffHours += 24;
+  sleepDuration.value = `${diffHours} ساعت ${diffMinutes} دقیقه`;
+  saveSleepHistoryEntry({
+    id: Date.now().toString(),
+    date: todayDate,
+    duration: `${diffHours}h ${diffMinutes}m`,
+    bedtime: bedtime.value,
+    waketime: waketime.value,
+  });
+};
+
+const saveSleepHistoryEntry = (entry) => {
+  sleepHistory.value.unshift(entry);
+  if (sleepHistory.value.length > 7) {
+    sleepHistory.value.pop();
+  }
+  saveSleepHistory();
+};
+
+const clearSleepHistory = () => {
+  sleepHistory.value = [];
+  saveSleepHistory();
+};
+
+// -------------------- ردیاب احساسات --------------------
+const moodData = ref({ entries: [] });
+
+const loadMoodData = async () => {
+  try {
+    const user = pb.authStore.model;
+    if (!user) throw new Error('کاربر لاگین نکرده است');
+    const userId = user.id;
+    console.log('بارگذاری داده‌های احساسات:', userId);
+
+    const record = await pb.collection('emotion_tracker').getFirstListItem(`userId="${userId}"`, {
+      requestKey: null,
+    });
+    moodData.value = record.content || { entries: [] };
+    console.log('داده‌های احساسات بارگذاری شد:', moodData.value);
+  } catch (error) {
+    if (error.status === 404) {
+      moodData.value = { entries: [] };
+      console.log('رکورد احساسات یافت نشد');
+    } else {
+      console.error('خطا در بارگذاری احساسات:', error);
+      alert('خطا در بارگذاری داده‌های احساسات: ' + (error.message || 'دوباره تلاش کنید'));
+    }
+  }
+};
+
+const saveMoodData = async () => {
+  try {
+    const user = pb.authStore.model;
+    if (!user) throw new Error('کاربر لاگین نکرده است');
+    const userId = user.id;
+    console.log('ذخیره داده‌های احساسات:', userId);
+
+    let record;
+    try {
+      record = await pb.collection('emotion_tracker').getFirstListItem(`userId="${userId}"`, {
+        requestKey: null,
+      });
+    } catch (error) {
+      if (error.status !== 404) throw error;
+    }
+
+    const data = { userId, content: moodData.value };
+    if (record) {
+      await pb.collection('emotion_tracker').update(record.id, data);
+      console.log('داده‌های احساسات به‌روزرسانی شد');
+    } else {
+      await pb.collection('emotion_tracker').create(data);
+      console.log('رکورد جدید احساسات ایجاد شد');
+    }
+  } catch (error) {
+    console.error('خطا در ذخیره احساسات:', error);
+    alert('خطا در ذخیره داده‌های احساسات: ' + (error.message || 'دوباره تلاش کنید'));
+  }
+};
+
+const addMoodEntry = (mood) => {
+  moodData.value.entries.push({ date: new Date().toISOString(), mood });
+  saveMoodData();
+};
+
+const resetMoodData = () => {
+  if (confirm('آیا از پاک کردن تمام داده‌ها اطمینان دارید؟')) {
+    moodData.value = { entries: [] };
+    saveMoodData();
+  }
+};
+
+const moodCounts = computed(() => {
+  return moodData.value.entries.reduce((acc, entry) => {
+    acc[entry.mood] = (acc[entry.mood] || 0) + 1;
+    return acc;
+  }, {});
+});
+
+const bestDay = computed(() => {
+  const days = {};
+  moodData.value.entries.forEach(entry => {
+    const date = new Date(entry.date).toLocaleDateString('fa-IR');
+    days[date] = (days[date] || 0) + 1;
+  });
+  const bestDay = Object.entries(days).reduce((a, b) => b[1] > a[1] ? b : a, [null, 0]);
+  return bestDay[0] || '---';
+});
+
+const getMoodIcon = (mood) => {
+  const icons = { happy: '😊', sad: '😢', angry: '😠' };
+  return icons[mood] || '❓';
+};
+
+const getMoodColor = (mood) => {
+  const colors = { happy: 'bg-green-500', sad: 'bg-blue-500', angry: 'bg-red-500' };
+  return colors[mood] || 'bg-gray-400';
+};
+
+// -------------------- ردیاب اهداف و برنامه هفتگی --------------------
+const goals = ref([]);
+const newGoal = ref({ text: '', date: '', completed: false });
+const daysOfWeek = ref(['شنبه', 'یک‌شنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنج‌شنبه']);
+const weeklyTasks = ref({});
+const newTask = ref({});
+let progressChart = null;
+
+const progressPercentage = computed(() => {
+  const completed = goals.value.filter(g => g.completed).length;
+  return goals.value.length > 0 ? Math.round((completed / goals.value.length) * 100) : 0;
+});
+
+const loadGoals = async () => {
+  try {
+    const user = pb.authStore.model;
+    if (!user) throw new Error('کاربر لاگین نکرده است');
+    const userId = user.id;
+    console.log('بارگذاری داده‌های اهداف:', userId);
+
+    const record = await pb.collection('goals_tracker').getFirstListItem(`userId="${userId}"`, {
+      requestKey: null,
+    });
+    const content = record.content || { goals: [], weeklyTasks: {} };
+    goals.value = content.goals || [];
+    weeklyTasks.value = content.weeklyTasks || {};
+    daysOfWeek.value.forEach(day => {
+      if (!weeklyTasks.value[day]) weeklyTasks.value[day] = [];
+      if (!newTask.value[day]) newTask.value[day] = '';
+    });
+    console.log('داده‌های اهداف بارگذاری شد:', goals.value, weeklyTasks.value);
+  } catch (error) {
+    if (error.status === 404) {
+      goals.value = [];
+      weeklyTasks.value = {};
+      daysOfWeek.value.forEach(day => {
+        weeklyTasks.value[day] = [];
+        newTask.value[day] = '';
+      });
+      console.log('رکورد اهداف یافت نشد');
+    } else {
+      console.error('خطا در بارگذاری اهداف:', error);
+      alert('خطا در بارگذاری داده‌های اهداف: ' + (error.message || 'دوباره تلاش کنید'));
+    }
+  }
+};
+
+const saveGoals = async () => {
+  try {
+    const user = pb.authStore.model;
+    if (!user) throw new Error('کاربر لاگین نکرده است');
+    const userId = user.id;
+    console.log('ذخیره داده‌های اهداف:', userId);
+
+    let record;
+    try {
+      record = await pb.collection('goals_tracker').getFirstListItem(`userId="${userId}"`, {
+        requestKey: null,
+      });
+    } catch (error) {
+      if (error.status !== 404) throw error;
+    }
+
+    const data = { userId, content: { goals: goals.value, weeklyTasks: weeklyTasks.value } };
+    if (record) {
+      await pb.collection('goals_tracker').update(record.id, data);
+      console.log('داده‌های اهداف به‌روزرسانی شد');
+    } else {
+      await pb.collection('goals_tracker').create(data);
+      console.log('رکورد جدید اهداف ایجاد شد');
+    }
+  } catch (error) {
+    console.error('خطا در ذخیره اهداف:', error);
+    alert('خطا در ذخیره داده‌های اهداف: ' + (error.message || 'دوباره تلاش کنید'));
+  }
+};
+
+const addGoal = () => {
+  if (newGoal.value.text.trim() === '' || newGoal.value.date === '') {
+    alert('لطفاً هدف و تاریخ را وارد کنید!');
+    return;
+  }
+  goals.value.push({ ...newGoal.value, id: Date.now().toString() });
+  saveGoals();
+  newGoal.value = { text: '', date: '', completed: false };
+  updateProgressChart();
+};
+
+const toggleGoal = (id) => {
+  const goal = goals.value.find(g => g.id === id);
+  if (goal) {
+    goal.completed = !goal.completed;
+    saveGoals();
+    updateProgressChart();
+  }
+};
+
+const deleteGoal = (id) => {
+  goals.value = goals.value.filter(g => g.id !== id);
+  saveGoals();
+  updateProgressChart();
+};
+
+const addTask = (day) => {
+  if (newTask.value[day].trim()) {
+    weeklyTasks.value[day].push(newTask.value[day]);
+    newTask.value[day] = '';
+    saveGoals();
+  }
+};
+
+const removeTask = (day, index) => {
+  weeklyTasks.value[day].splice(index, 1);
+  saveGoals();
+};
+
+const initProgressChart = () => {
+  progressChart = new ApexCharts(document.querySelector("#progressChart"), {
+    chart: {
+      type: 'donut',
+      height: '100%',
+      width: '100%',
+      animations: { enabled: true, easing: 'easeinout', speed: 800 },
+    },
+    series: [0, 100],
+    colors: ['#8B5CF6', '#EDE9FE'],
+    labels: ['پیشرفت', 'باقیمانده'],
+    plotOptions: { pie: { donut: { size: '75%', labels: { show: false } } } },
+    dataLabels: { enabled: false },
+    legend: { show: false },
+    tooltip: { enabled: false },
+    responsive: [{ breakpoint: 480, options: { chart: { width: 200 } } }],
+  });
+  progressChart.render();
+  updateProgressChart();
+};
+
+const updateProgressChart = () => {
+  const completed = goals.value.filter(g => g.completed).length;
+  const progress = goals.value.length > 0 ? Math.round((completed / goals.value.length) * 100) : 0;
+  const remaining = 100 - progress;
+  progressChart.updateSeries([progress, remaining]);
+};
+
+// -------------------- راه‌اندازی اولیه --------------------
+onMounted(async () => {
+  console.log('وضعیت احراز هویت:', pb.authStore.isValid, pb.authStore.model);
+  await loadWaterData();
+  await loadWorkoutHistory();
+  await loadSleepHistory();
+  await loadMoodData();
+  await loadGoals();
+  initProgressChart();
+});
+
+onUnmounted(() => {
+  if (progressChart) {
+    progressChart.destroy();
+  }
+  // اطمینان از پاکسازی تایمر هنگام خروج
+  if (timer.value.interval) {
+    clearInterval(timer.value.interval);
+  }
+});
 </script>
-  
+
 <style scoped>
-  .mood-bar {
-    transition: width 0.5s ease-in-out;
-  }
-  
-  .bg {
-    background-image: url(../assets/images/seamless-pattern-with-sports-icons-doodle-with-sport-icons-on-white-background-vintage-sport-pat.png);
-    background-color: #01ff0586;
-    background-blend-mode: color;
-  }
-  
-  .animation1:hover {
-    animation: shakeY 1.5s, cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.5s infinite;
-    background-color: oklch(0.885 0.062 18.334);
-  }
-  
-  @keyframes shakeY {
-    0%, 100% { transform: translateY(0); }
-    10% { transform: translateY(-12px); }
-    20% { transform: translateY(12px); }
-    30% { transform: translateY(-9px); }
-    40% { transform: translateY(9px); }
-    50% { transform: translateY(-6px); }
-    60% { transform: translateY(6px); }
-    70% { transform: translateY(-3px); }
-    80% { transform: translateY(3px); }
-    90% { transform: translateY(-1px); }
-  }
-  
-  .animation2:hover {
-    animation: swing 2s cubic-bezier(0.4, 0, 0.2, 1) 0.3s 3;
-    transform-origin: top center;
-    background-color: oklch(0.882 0.059 254.128);
-  }
-  
-  @keyframes swing {
-    0% { transform: rotate(0deg); }
-    20% { transform: rotate(20deg); }
-    40% { transform: rotate(-20deg); }
-    60% { transform: rotate(15deg); }
-    80% { transform: rotate(-15deg); }
-    100% { transform: rotate(0deg); }
-  }
-  
-  .animation3:hover {
-    animation: tada 1.5s cubic-bezier(0.4, 0, 0.2, 1) 0.5s 2;
-    background-color: oklch(0.925 0.084 155.995);
-  }
-  
-  @keyframes tada {
-    0% { transform: scale(1); }
-    10%, 20% { transform: scale(0.9) rotate(-5deg); }
-    30%, 50%, 70%, 90% { transform: scale(1.2) rotate(5deg); }
-    40%, 60%, 80% { transform: scale(1.2) rotate(-5deg); }
-    100% { transform: scale(1) rotate(0deg); }
-  }
-  
-  .g-system {
+.mood-bar {
+  transition: width 0.5s ease-in-out;
+}
+.bg {
+  background-image: url(../assets/images/seamless-pattern-with-sports-icons-doodle-with-sport-icons-on-white-background-vintage-sport-pat.png);
+  background-color: #01ff0586;
+  background-blend-mode: color;
+}
+.animation1:hover {
+  animation: shakeY 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.5s infinite;
+  background-color: oklch(0.885 0.062 18.334);
+}
+@keyframes shakeY {
+  0%, 100% { transform: translateY(0); }
+  10% { transform: translateY(-12px); }
+  20% { transform: translateY(12px); }
+  30% { transform: translateY(-9px); }
+  40% { transform: translateY(9px); }
+  50% { transform: translateY(-6px); }
+  60% { transform: translateY(6px); }
+  70% { transform: translateY(-3px); }
+  80% { transform: translateY(3px); }
+  90% { transform: translateY(-1px); }
+}
+.animation2:hover {
+  animation: swing 2s cubic-bezier(0.4, 0, 0.2, 1) 0.3s 3;
+  transform-origin: top center;
+  background-color: oklch(0.882 0.059 254.128);
+}
+@keyframes swing {
+  0% { transform: rotate(0deg); }
+  20% { transform: rotate(20deg); }
+  40% { transform: rotate(-20deg); }
+  60% { transform: rotate(15deg); }
+  80% { transform: rotate(-15deg); }
+  100% { transform: rotate(0deg); }
+}
+.animation3:hover {
+  animation: tada 1.5s cubic-bezier(0.4, 0, 0.2, 1) 0.5s 2;
+  background-color: oklch(0.925 0.084 155.995);
+}
+@keyframes tada {
+  0% { transform: scale(1); }
+  10%, 20% { transform: scale(0.9) rotate(-5deg); }
+  30%, 50%, 70%, 90% { transform: scale(1.2) rotate(5deg); }
+  40%, 60%, 80% { transform: scale(1.2) rotate(-5deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+.g-system {
   display: grid;
   gap: 1.5rem;
   width: 100%;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* تغییر به grid auto-fill */
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 }
-
 @media (max-width: 899px) {
   .g-system {
-    grid-template-columns: 1fr; /* برای گوشی‌های کوچک: یک ستون */
-    justify-items: center; /* هر کارت داخل گرید وسط */
+    grid-template-columns: 1fr;
+    justify-items: center;
   }
 }
-
 @media (min-width: 900px) {
   .g-system {
-    grid-template-columns: repeat(2, 1fr); /* برای تبلت‌ها: دو ستون */
+    grid-template-columns: repeat(2, 1fr);
     max-width: 1000px;
     margin: 0 auto;
     justify-items: center;
   }
 }
-
-
 </style>
