@@ -93,8 +93,8 @@ const menuItems = [
         <div
           class="w-full lg:w-[95%] h-[160px] lg:h-[200px] bg-purple-200 flex flex-col justify-center items-center gap-4 lg:gap-[30px] shadow-purple-500 shadow-xl"
         >
-          <h3 class="text-lg lg:text-2xl">ربات غربال 🤖</h3>
-          <a target="_blank" href="https://t.me/student_math_bot">
+          <h3 class="text-lg lg:text-2xl">ربات همکلاسی 🤖</h3>
+          <a target="_blank" href="https://t.me/Hamekelasit_bot">
             <button class="px-3 py-2 lg:px-4 lg:py-3 bg-purple-500 text-white hover:bg-purple-600 rounded text-sm lg:text-base">
               ورود به ربات تلگرام
             </button>

@@ -45,8 +45,8 @@ export default {
 <style scoped>
 nav {
   padding: 10px;
-  background: #f8f8f8;
-  margin-bottom: 20px;
+  background: oklch(96.7% 0.003 264.542);
+  border: 1px solid black;
 }
 nav a {
   margin: 0 10px;
