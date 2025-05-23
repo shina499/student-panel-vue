@@ -52,7 +52,7 @@ const menuItems = [
   <transition name="sidebar-slide">
     <aside
       v-show="!isMobileOrTablet() || isOpen"
-      class="fixed lg:static top-0 right-0 z-40 w-[80%] sm:w-[300px] lg:w-[350px] h-full lg:h-[180vh] bg-white shadow-2xl p-4 rounded-lg overflow-y-auto"
+      class="fixed lg:static top-0 right-0 z-40 w-[80%] sm:w-[300px] lg:w-[350px] h-full lg:h-[180vh] bg-white shadow-2xl p-4 rounded-lg overflow-y-auto dark:bg-slate-800"
     >
       <!-- دکمه بستن برای موبایل/تبلت -->
       <button
@@ -63,9 +63,9 @@ const menuItems = [
         ✖ بستن
       </button>
 
-      <h2 class="font-black text-2xl lg:text-3xl mb-6 text-center">پنل دسترسی سریع</h2>
+      <h2 class="font-black text-2xl lg:text-3xl mb-6 text-center dark:text-white">پنل دسترسی سریع</h2>
 
-      <section class="flex flex-col justify-center items-center gap-6 bg-white">
+      <section class="flex flex-col justify-center items-center gap-6 bg-white dark:bg-slate-800">
         <div
           v-for="item in menuItems"
           :key="item.path"

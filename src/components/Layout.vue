@@ -5,10 +5,10 @@ import Sidebar from "./Sidebar.vue";
 </script>
 
 <template>
-  <div class="wrapper">
+  <div class="wrapper" >
     <Heading />
     <div class="content">
-      <div class="sidebar">
+      <div class="sidebar dark:bg-slate-800 dark:shadow-slate-900 shadow-2xl">
         <Sidebar />
       </div>
       <div class="main">
@@ -38,14 +38,12 @@ import Sidebar from "./Sidebar.vue";
 /* سایدبار */
 .sidebar {
   flex-shrink: 0;
-  background-color: #fff;
 }
 
 /* محتوای اصلی */
 .main {
   flex: 1;
   padding: 1rem;
-  background-color: #fefefe;
   overflow: auto;
 }
 

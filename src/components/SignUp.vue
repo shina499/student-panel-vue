@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-200 to-pink-200">
-    <div class="bg-white rounded-xl shadow-lg p-8 w-full max-w-md animate__animated animate__fadeInUp">
-      <h1 class="text-3xl font-bold text-pink-600 text-center mb-8">ثبت‌نام در پنل دانش‌آموزی 🎉</h1>
+    <div class="bg-white rounded-xl shadow-lg p-8 w-full max-w-md animate__animated animate__fadeInUp dark:bg-slate-800">
+      <h1 class="text-3xl font-bold text-pink-600 text-center mb-8 dark:text-white">ثبت‌نام در پنل دانش‌آموزی 🎉</h1>
       
       <div class="relative mb-6">
         <i class="fas fa-user absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-500"></i>

@@ -1,6 +1,6 @@
 <template>
   <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-700 via-pink-500 to-blue-600">
-    <div class="bg-white bg-opacity-20 backdrop-blur-xl rounded-3xl shadow-2xl p-10 w-full max-w-lg animate__animated animate__zoomIn">
+    <div class="bg-white bg-opacity-20 backdrop-blur-xl rounded-3xl shadow-2xl p-10 w-full max-w-lg animate__animated animate__zoomIn dark:bg-slate-800 dark:text-white">
       <h1 class="text-4xl font-bold  text-center mb-10 tracking-tight">ورود به پنل دانش‌آموزی 🌟</h1>
       
       <div class="relative mb-8">

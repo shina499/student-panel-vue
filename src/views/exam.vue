@@ -2,8 +2,8 @@
   <div>
     <section class="flex flex-col lg:flex-row md:flex-col justify-center gap-6 items-center h-auto">
       <!-- کارت تقویم امتحانی -->
-      <div class="bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center w-full md:w-[500px]">
-        <div class="w-full md:w-[500px] h-auto bg-white rounded-3xl shadow-2xl flex flex-col overflow-hidden">
+      <div class="bg-gradient-to-br flex items-center justify-center w-full md:w-[500px] dark:bg-slate-900 rounded-3xl">
+        <div class="w-full md:w-[500px] h-auto bg-white rounded-3xl shadow-2xl flex flex-col overflow-hidden dark:bg-slate-900">
           <!-- هدر -->
           <div class="bg-gradient-to-r from-purple-600 to-blue-500 text-white p-6">
             <h1 class="text-xl sm:text-2xl font-bold">📅 تقویم امتحانی</h1>
@@ -12,15 +12,15 @@
           <!-- محتوا -->
           <div class="flex-1 p-4 overflow-y-auto">
             <!-- کارت امتحانات امروز -->
-            <div class="bg-purple-50 p-4 rounded-xl mb-4">
+            <div class="bg-purple-50 p-4 rounded-xl mb-4 dark:bg-slate-900 dark:shadow-slate-950 dark:shadow-2xl">
               <h2 class="text-lg font-bold text-purple-600 mb-2">امتحانات امروز</h2>
               <div class="space-y-2">
                 <div
                   v-for="exam in todayExams"
                   :key="exam.id"
-                  class="bg-white p-3 rounded-xl shadow-sm flex items-center justify-between animate__animated animate__fadeIn"
+                  class="bg-white p-3 rounded-xl shadow-sm flex items-center justify-between animate__animated animate__fadeIn dark:bg-slate-950"
                 >
-                  <div>
+                  <div class="dark:bg-slate-950  dark:text-white">
                     <h3 class="font-bold">{{ exam.title }}</h3>
                     <p class="text-sm text-gray-500">
                       {{ new Date(exam.date).toLocaleDateString('fa-IR') }}
@@ -45,7 +45,7 @@
                 <div
                   v-for="exam in upcomingExams"
                   :key="exam.id"
-                  class="bg-white p-3 rounded-xl shadow-sm flex items-center justify-between animate__animated animate__fadeIn"
+                  class="bg-white p-3 rounded-xl shadow-sm flex items-center justify-between animate__animated animate__fadeIn dark:bg-slate-950 dark:text-white"
                 >
                   <div>
                     <h3 class="font-bold">{{ exam.title }}</h3>
@@ -67,18 +67,18 @@
             </div>
           </div>
           <!-- فرم افزودن -->
-          <div class="border-t p-4 bg-gray-50">
+          <div class="border-t p-4 bg-gray-50 dark:bg-slate-950 dark:text-white">
             <div class="flex flex-col sm:flex-row gap-4">
               <input
                 v-model="examTitle"
                 type="text"
                 placeholder="📝 عنوان امتحان"
-                class="w-full p-2 border-2 border-purple-100 rounded-xl focus:border-purple-400 transition-all"
+                class="w-full p-2 border-2 border-purple-100 rounded-xl focus:border-purple-400 transition-all dark:text-white"
               />
               <input
                 v-model="examDate"
                 type="date"
-                class="w-full p-2 border-2 border-purple-100 rounded-xl focus:border-purple-400 transition-all"
+                class="w-full p-2 border-2 border-purple-100 rounded-xl focus:border-purple-400 transition-all dark:text-white"
               />
               <button
                 @click="addExam"
@@ -93,38 +93,38 @@
 
       <!-- کارت نمرات -->
       <div
-        class="card bg-white p-6 rounded-lg shadow-lg w-full md:w-[600px] h-[600px] sm:h-[1000px] mb-10 overflow-y-auto"
+        class="card bg-white border-gray-100 p-6 rounded-lg shadow-lg w-full md:w-[600px] h-[600px] sm:h-[1000px] mb-10 overflow-y-auto dark:bg-slate-900 dark:border-slate-950"
       >
-        <h1 class="text-2xl sm:text-3xl font-bold text-center text-blue-700 mb-6">
+        <h1 class="text-2xl sm:text-3xl font-bold text-center text-blue-700 mb-6 dark:text-white">
           پنل نمرات دانش‌آموزی
         </h1>
         <!-- فیلد نام درس -->
         <div class="mb-4">
-          <label for="studentName" class="block text-gray-700">نام درس:</label>
+          <label for="studentName" class="block text-gray-700 dark:text-white">نام درس:</label>
           <input
             v-model="gradeStudentName"
             type="text"
-            class="w-full p-2 border border-gray-300 rounded mt-1"
+            class="w-full p-2 border border-gray-300 rounded mt-1 dark:text-white"
           />
         </div>
         <!-- فیلد تاریخ -->
         <div class="mb-4">
-          <label for="date" class="block text-gray-700">تاریخ:</label>
+          <label for="date" class="block text-gray-700 dark:text-white">تاریخ:</label>
           <input
             v-model="gradeDate"
             type="date"
-            class="w-full p-2 border border-gray-300 rounded mt-1"
+            class="w-full p-2 border border-gray-300 rounded mt-1 dark:text-white"
           />
         </div>
         <!-- فیلد نمرات -->
         <div class="mb-4">
-          <label for="grades" class="block text-gray-700"
+          <label for="grades" class="block text-gray-700 dark:text-white"
             >نمرات (با کاما جدا کنید):</label
           >
           <input
             v-model="gradeInput"
             type="text"
-            class="w-full p-2 border border-gray-300 rounded mt-1"
+            class="w-full p-2 border border-gray-300 rounded mt-1 dark:text-white"
             placeholder="مثال: ۱۸, ۱۹, ۲۰"
           />
         </div>
@@ -136,12 +136,12 @@
           ذخیره نمرات
         </button>
         <!-- نمایش نتیجه -->
-        <div class="mt-6 text-center overflow-y-auto text-gray-700">
+        <div class="mt-6 text-center overflow-y-auto text-gray-700 ">
           <div v-if="gradesData.length" class="grid grid-cols-1 gap-8">
             <div
               v-for="entry in gradesData"
               :key="entry.id"
-              class="relative bg-white rounded-3xl overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-500 hover:-translate-y-3 group"
+              class="relative bg-white dark:bg-slate-950 dark:text-white rounded-3xl overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-500 hover:-translate-y-3 group"
             >
               <div class="absolute inset-0 bg-gradient-to-br from-purple-500 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <div class="relative z-10 p-8">
@@ -150,14 +150,14 @@
                     {{ entry.studentName.charAt(0) }}
                   </div>
                   <div>
-                    <h3 class="text-2xl font-bold text-gray-900 group-hover:text-white transition-colors duration-500">{{ entry.studentName }}</h3>
-                    <p class="text-sm text-gray-500 group-hover:text-purple-100 transition-colors duration-500">{{ entry.date }}</p>
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white group-hover:text-white transition-colors duration-500">{{ entry.studentName }}</h3>
+                    <p class="text-sm text-gray-500 dark:text-white group-hover:text-purple-100 transition-colors duration-500">{{ entry.date }}</p>
                   </div>
                   <button
                     @click="deleteGrade(entry.id)"
                     class="ml-auto text-gray-500 hover:text-red-500 transition-colors p-2 rounded-full hover:bg-white/20"
                   >
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-6 h-6 dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
                             d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
                       </path>
@@ -174,8 +174,8 @@
                       </svg>
                     </div>
                     <div>
-                      <p class="text-sm text-gray-500 group-hover:text-purple-100 transition-colors duration-500">تاریخ ثبت</p>
-                      <p class="font-medium text-gray-900 group-hover:text-white transition-colors duration-500">{{ entry.date }}</p>
+                      <p class="text-sm text-gray-500 group-hover:text-purple-100 transition-colors duration-500 dark:text-gray-50">تاریخ ثبت</p>
+                      <p class="font-medium text-gray-900 group-hover:text-white transition-colors duration-500 dark:text-white">{{ entry.date }}</p>
                     </div>
                   </li>
                   <li class="flex items-center gap-4 bg-white/20 backdrop-blur-md p-4 rounded-xl">
@@ -187,8 +187,8 @@
                       </svg>
                     </div>
                     <div>
-                      <p class="text-sm text-gray-500 group-hover:text-purple-100 transition-colors duration-500">نمرات</p>
-                      <p class="font-medium text-gray-900 group-hover:text-white transition-colors duration-500">{{ entry.grades.join(', ') }}</p>
+                      <p class="text-sm text-gray-500 group-hover:text-purple-100 transition-colors duration-500 dark:text-gray-50">نمرات</p>
+                      <p class="font-medium text-gray-900 group-hover:text-white transition-colors duration-500 dark:text-white">{{ entry.grades.join(', ') }}</p>
                     </div>
                   </li>
                 </ul>
@@ -217,7 +217,7 @@
     </section>
 
     <div
-      class="w-full lg:w-[900px] md:w-[600px] h-auto mx-auto my-10 bg-white rounded-3xl shadow-2xl overflow-y-auto flex flex-col md:flex-row"
+      class="w-full lg:w-[900px] md:w-[600px] h-auto mx-auto my-10 bg-white rounded-3xl shadow-2xl overflow-y-auto flex flex-col md:flex-row dark:bg-slate-900"
     >
       <!-- سایدبار -->
       <div
@@ -240,13 +240,13 @@
       </div>
       <!-- محتوا -->
       <div class="flex-1 p-8 overflow-y-auto">
-        <h1 class="text-2xl sm:text-3xl font-bold text-purple-600 mb-6">
+        <h1 class="text-2xl sm:text-3xl font-bold text-purple-600 mb-6 dark:text-white">
           چالش امروز 🗓️ <span class="text-lg sm:text-2xl">{{ todayStr }}</span>
         </h1>
         <!-- سوالات علوم -->
         <div class="mb-8 animate__animated animate__fadeInLeft">
-          <div class="bg-red-100 rounded-xl p-6 mb-4">
-            <h2 class="text-xl sm:text-2xl font-bold text-red-600 mb-4">🔬 علوم</h2>
+          <div class="bg-red-100 rounded-xl p-6 mb-4 dark:bg-red-900">
+            <h2 class="text-xl sm:text-2xl font-bold text-red-600 dark:text-white mb-4">🔬 علوم</h2>
             <div class="space-y-4">
               <div
                 v-for="(q, index) in state.todayQuestions.science"
@@ -256,12 +256,13 @@
                 <p class="font-bold mb-2">سوال {{ index + 1 }}: {{ q.question }}</p>
                 <div class="grid grid-cols-2 gap-2">
                   <button
+                    
                     v-for="option in q.options"
                     :key="option"
                     @click="handleAnswer('science', index, option)"
                     :disabled="answeredQuestions.science[index]"
                     :class="[
-                      'p-2 rounded transition-all',
+                      'p-2 rounded transition-all dark:border',
                       answeredQuestions.science[index]
                         ? option === q.answer
                           ? 'bg-green-200'
@@ -269,6 +270,7 @@
                           ? 'bg-red-200 animate__animated animate__shakeX'
                           : 'bg-gray-50'
                         : 'bg-gray-50 hover:bg-purple-100'
+                        
                     ]"
                   >
                     {{ option }}
@@ -280,8 +282,8 @@
         </div>
         <!-- سوالات ریاضی -->
         <div class="animate__animated animate__fadeInRight">
-          <div class="bg-blue-100 rounded-xl p-6">
-            <h2 class="text-xl sm:text-2xl font-bold text-blue-600 mb-4">🧮 ریاضی</h2>
+          <div class="bg-blue-100 rounded-xl p-6 dark:bg-blue-900">
+            <h2 class="text-xl sm:text-2xl font-bold text-blue-600 dark:text-white mb-4">🧮 ریاضی</h2>
             <div class="space-y-4">
               <div
                 v-for="(q, index) in state.todayQuestions.math"
@@ -296,7 +298,7 @@
                     @click="handleAnswer('math', index, option)"
                     :disabled="answeredQuestions.math[index]"
                     :class="[
-                      'p-2 rounded transition-all',
+                      'p-2 rounded transition-all dark:border',
                       answeredQuestions.math[index]
                         ? option === q.answer
                           ? 'bg-green-200'
@@ -677,9 +679,7 @@ onMounted(async () => {
 .bdr {
   border-radius: 20px;
 }
-.card {
-  border: 1px solid #e2e8f0;
-}
+
 @media (max-width: 640px) {
   .card {
     margin-top: 1rem;

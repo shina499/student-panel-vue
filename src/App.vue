@@ -1,18 +1,24 @@
 <script setup>
 import Layout from "@/components/Layout.vue";
+import Theme from "@/components/Theme.vue";
 </script>
 <template>
-    <nav v-if="!isAuthenticated">
-      <router-link to="/signup">ثبت‌نام</router-link> |
-      <router-link to="/login">ورود</router-link>
+  <div class="w-[100%] justify-between flex items-center bg-gray-100 dark:bg-slate-900 border-b dark:border-b-gray-300 p-5">
+    <nav v-if="!isAuthenticated" class="bg-transparent cursor-pointer  w-[90%]" >
+      <router-link to="/signup" class="dark:text-white">ثبت‌نام</router-link> |
+      <router-link to="/login" class="dark:text-white">ورود</router-link>
     </nav>
-    <nav v-else>
-      <router-link to="/dashboard">داشبورد</router-link> |
-      <router-link to="/exam">آزمون</router-link> |
-      <router-link to="/salamat">سلامت</router-link> |
-      <router-link to="/note">یادداشت</router-link> |
-      <button @click="logout">خروج</button>
+    <nav v-else class=" dark:text-white cursor-pointer w-[90%] bg-transparent">
+        <router-link to="/dashboard" class="dark:text-white">داشبورد</router-link> <span class="dark:text-white">|</span>
+      <router-link to="/exam" class="dark:text-white">آزمون</router-link> <span class="dark:text-white">|</span>
+      <router-link to="/salamat" class="dark:text-white">سلامت</router-link> <span class="dark:text-white">|</span>
+      <router-link to="/note" class="dark:text-white">یادداشت</router-link> <span class="dark:text-white">| </span>
+      <button @click="logout" class="dark:text-white">خروج</button>
     </nav>
+    <Theme />
+
+  </div>
+
 <Layout />
 </template>
 
@@ -40,27 +46,17 @@ export default {
     });
   },
 };
+
+
 </script>
 
 <style scoped>
-nav {
-  padding: 10px;
-  background: oklch(96.7% 0.003 264.542);
-  border: 1px solid black;
-}
 nav a {
   margin: 0 10px;
   text-decoration: none;
-  color: #333;
 }
 nav a.router-link-exact-active {
   color: #42b983;
-}
-button {
-  background: none;
-  border: none;
-  color: #333;
-  cursor: pointer;
 }
 button:hover {
   color: #42b983;

@@ -11,7 +11,7 @@ const formattedDate = new Intl.DateTimeFormat('fa-IR', {
 </script>
 
 <template>
-  <header class="w-full h-auto bg-gray-100">
+  <header class="w-full h-auto bg-gray-100 dark:bg-slate-900 dark:text-white">
     <div class="flex flex-row justify-between items-center gap-3 md:gap-[20px] p-3 md:p-5 h-auto md:h-[80px]">
 
       <!-- خوش آمدید - فقط در md و بالاتر -->

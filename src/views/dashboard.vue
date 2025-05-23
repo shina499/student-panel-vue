@@ -2,7 +2,7 @@
   <div class="w-full container">
     <section class="g-system">
       <!-- کارت ۱: تحلیل فعالیت هفتگی -->
-      <div class="card bg-white rounded-2xl shadow-xl p-6 animate__animated animate__bounceIn w-full max-w-lg">
+      <div class="card bg-white rounded-2xl shadow-xl p-6 animate__animated animate__bounceIn w-full max-w-lg dark:bg-slate-900 dark:text-white">
         <div class="flex items-center justify-between mb-4">
           <h1 class="text-xl font-bold text-purple-600">📊 تحلیل فعالیت هفتگی</h1>
           <div class="flex gap-2">
@@ -10,7 +10,7 @@
             <span class="px-2 py-1 bg-blue-100 text-blue-600 rounded-full text-sm">📅 هفته جاری</span>
           </div>
         </div>
-        <div id="activity-chart"></div>
+        <div id="activity-chart" class="dark:text-white"></div>
         <div class="grid grid-cols-4 gap-2 mt-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 justify-center sm:gap-6 md:gap-2">
           <div class="flex items-center gap-1 justify-center">
             <div class="w-3 h-3 bg-[#6366f1] rounded-full"></div>
@@ -32,10 +32,10 @@
       </div>
 
       <!-- کارت ۲: لیست تکالیف دانش‌آموزی -->
-      <div class="card bg-gray-50 rounded-xl animate__animated animate__bounceIn w-full max-w-lg mt-4">
+      <div class="card bg-gray-50 rounded-xl animate__animated animate__bounceIn w-full max-w-lg mt-4 dark:bg-slate-900 dark:text-white">
         <div class="container mx-auto p-4">
-          <div class="bg-white rounded-lg shadow-lg p-6">
-            <h1 class="text-2xl font-bold text-center mb-6 text-gray-800">لیست تکالیف دانش‌آموزی</h1>
+          <div class="bg-white rounded-lg p-6 dark:bg-slate-950 dark:shadow-slate-950 shadow-2xl">
+            <h1 class="text-2xl font-bold text-center mb-6 text-gray-800 dark:text-white">لیست تکالیف دانش‌آموزی</h1>
             <div class="flex gap-2 mb-4">
               <input
                 v-model="todoText"
@@ -54,11 +54,11 @@
               <li
                 v-for="todo in todos"
                 :key="todo.id"
-                class="flex justify-between items-center bg-gray-50 p-3 rounded-lg hover:bg-gray-100 transition-colors min-h-[72px]"
+                class="flex justify-between items-center bg-gray-50 p-3 rounded-lg hover:bg-gray-100 transition-colors min-h-[72px] dark:bg-slate-950 dark:border"
               >
-                <div class="flex-1">
-                  <span class="text-gray-800">{{ todo.text }}</span>
-                  <span class="text-xs text-gray-400 block mt-1">{{
+                <div class="flex-1 ">
+                  <span class="text-gray-800 dark:text-white">{{ todo.text }}</span>
+                  <span class="text-xs text-gray-400 block mt-1 dark:text-white">{{
                     new Date(todo.timestamp).toLocaleString('fa-IR')
                   }}</span>
                 </div>
@@ -78,13 +78,13 @@
       </div>
 
       <!-- کارت ۳: برنامه هفتگی -->
-      <div class="card bg-gray-50 flex flex-col items-center justify-center p-4 week w-full max-w-lg mt-4">
+      <div class="card bg-gray-50 flex flex-col items-center justify-center p-4 week w-full max-w-lg mt-4 dark:bg-slate-900 ">
         <div class="w-full">
-          <h1 class="text-2xl font-bold text-center mb-4 text-gray-800 animate__animated animate__fadeIn">
+          <h1 class="text-2xl font-bold text-center mb-4 text-gray-800 animate__animated animate__fadeIn dark:text-white">
             برنامه هفتگی
           </h1>
-          <table id="schedule" class="w-full bg-white rounded-lg shadow-sm animate__animated animate__fadeInUp">
-            <thead>
+          <table id="schedule" class="w-full bg-white rounded-lg shadow-sm animate__animated animate__fadeInUp dark:border-black">
+            <thead class="dark:border-black">
               <tr class="bg-gradient-to-r from-blue-400 to-purple-400 text-white">
                 <th class="p-2">زنگ</th>
                 <th class="p-2">شنبه</th>
@@ -94,14 +94,14 @@
                 <th class="p-2">چهارشنبه</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody class="dark:border-black">
               <tr v-for="(period, rowIndex) in periods" :key="period">
                 <td class="p-2 font-bold bg-gray-100 text-center">{{ period }}</td>
                 <td
                   v-for="(day, colIndex) in days"
                   :key="day"
                   contenteditable
-                  class="p-2 border border-gray-200 text-center hover:bg-opacity-75 focus:bg-opacity-100"
+                  class="p-2 border border-gray-200 dark:border-black text-center hover:bg-opacity-75 focus:bg-opacity-100"
                   :class="colors[colIndex % colors.length]"
                   @input="updateSchedule(rowIndex, colIndex, $event)"
                 >
@@ -120,10 +120,10 @@
       </div>
 
       <!-- کارت ۴: سیستم تمرکز هوشمند -->
-      <div class="card bg-white rounded-2xl shadow-xl p-6 flex flex-col items-center animate__animated animate__bounceIn w-full max-w-lg mt-4">
+      <div class="card bg-white rounded-2xl shadow-xl p-6 flex flex-col items-center animate__animated animate__bounceIn w-full max-w-lg mt-4 dark:bg-slate-900 ">
         <div class="flex items-center gap-3 mb-6">
           <span class="text-4xl">🎯</span>
-          <h1 class="text-2xl font-bold text-blue-600">سیستم تمرکز هوشمند</h1>
+          <h1 class="text-2xl font-bold text-blue-600 dark:text-white">سیستم تمرکز هوشمند</h1>
         </div>
         <div class="relative">
           <svg width="200" height="200">
@@ -135,8 +135,8 @@
                     stroke-dashoffset="0"/>
           </svg>
           <div class="absolute inset-0 flex flex-col items-center justify-center">
-            <div id="time" class="text-4xl font-bold text-blue-600">25:00</div>
-            <div id="status" class="text-blue-400">آماده</div>
+            <div id="time" class="text-4xl font-bold text-blue-600 dark:text-blue-400">25:00</div>
+            <div id="status" class="text-blue-400 dark:text-blue-200">آماده</div>
           </div>
         </div>
         <div class="flex gap-4 mt-6">
@@ -148,12 +148,12 @@
           </button>
         </div>
         <div class="grid grid-cols-2 gap-4 mt-6 w-full">
-          <div class="bg-blue-50 p-3 rounded-lg">
+          <div class="bg-blue-50 p-3 rounded-lg dark:bg-slate-950 dark:text-white">
             <label class="block text-sm text-blue-500 mb-1">مدت مطالعه (دقیقه)</label>
             <input type="number" id="studyTime" value="25" min="0" 
                    class="w-full p-2 border border-blue-200 rounded-lg">
           </div>
-          <div class="bg-blue-50 p-3 rounded-lg">
+          <div class="bg-blue-50 p-3 rounded-lg dark:bg-slate-950 dark:text-white">
             <label class="block text-sm text-blue-500 mb-1">مدت استراحت (دقیقه)</label>
             <input type="number" id="breakTime" value="5" min="0"
                    class="w-full p-2 border border-blue-200 rounded-lg">

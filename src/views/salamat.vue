@@ -1,23 +1,23 @@
 <template>
   <section class="g-system">
     <!-- Water Consumption Component -->
-    <div class="w-full max-w-[550px] h-[400px] bg-blue-200 rounded-2xl shadow-xl p-8 flex flex-col items-center animate__animated animate__fadeIn">
+    <div class="w-full max-w-[550px] h-[400px] bg-blue-200 rounded-2xl shadow-xl p-8 flex flex-col items-center animate__animated animate__fadeIn dark:bg-blue-600">
       <div class="flex items-center gap-3 mb-6">
         <span class="text-4xl">💧</span>
-        <h1 class="text-2xl font-bold text-blue-600">آب مصرفی امروز</h1>
+        <h1 class="text-2xl font-bold text-blue-600 dark:text-white">آب مصرفی امروز</h1>
       </div>
 
       <div class="flex items-center gap-6 mb-8">
-        <button @click="changeCount(-1)" class="p-3 rounded-xl bg-red-100 hover:bg-red-200 text-red-500 text-2xl transition-all">
+        <button @click="changeCount(-1)" class="p-3 rounded-xl bg-red-100 hover:bg-red-200 text-red-500 text-2xl transition-all dark:bg-red-400 dark:hover:bg-red-500 dark:text-red-700">
           🥤-
         </button>
         
-        <div class="text-6xl font-bold text-blue-500">
+        <div class="text-6xl font-bold text-blue-500 dark:text-sky-200">
           <span>{{ waterData.count }}</span>
-          <span class="text-2xl text-blue-300">/8</span>
+          <span class="text-2xl text-blue-300 dark:text-sky-100">/8</span>
         </div>
         
-        <button @click="changeCount(1)" class="p-3 rounded-xl bg-blue-300 hover:bg-blue-400 text-blue-500 text-2xl transition-all">
+        <button @click="changeCount(1)" class="p-3 rounded-xl bg-blue-300 hover:bg-blue-400 text-blue-500 text-2xl transition-all dark:bg-blue-400 dark:hover:bg-blue-500 dark:text-blue-700">
           🥤+
         </button>
       </div>
@@ -28,8 +28,8 @@
       </div>
 
       <div class="flex items-center justify-between w-full mt-auto">
-        <div class="text-lg text-blue-400">{{ getStatusText() }}</div>
-        <button @click="resetCount" class="text-gray-400 hover:text-blue-500 transition-colors flex items-center gap-2">
+        <div class="text-lg text-blue-400 dark:text-white">{{ getStatusText() }}</div>
+        <button @click="resetCount" class="text-gray-400 hover:text-blue-500 transition-colors flex items-center gap-2 dark:text-white dark:hover:text-sky-200">
           🔄 بازنشانی
         </button>
       </div>
@@ -80,7 +80,7 @@
     </div>
 
     <!-- Sleep Manager Component -->
-    <div class="w-full max-w-[550px] h-[400px] bg-pink-300 rounded-2xl shadow-xl p-6 flex flex-col animate__animated animate__fadeIn">
+    <div class="w-full max-w-[550px] h-[400px] bg-pink-300 rounded-2xl shadow-xl p-6 flex flex-col animate__animated animate__fadeIn dark:bg-pink-400">
       <div class="flex items-center gap-3 mb-4">
         <span class="text-4xl">🌙</span>
         <h1 class="text-2xl font-bold text-purple-600 bg-white p-2">الگوی خواب دانش‌آموزی</h1>
@@ -134,23 +134,23 @@
     </div>
 
     <!-- Mood Tracker Component -->
-    <div class="bg-yellow-200 rounded-2xl shadow-xl p-6 flex flex-col animate__animated animate__fadeIn" style="width: 100%; max-width: 550px; height: 400px;">
+    <div class="bg-yellow-200 rounded-2xl shadow-xl p-6 flex flex-col animate__animated animate__fadeIn dark:bg-yellow-400" style="width: 100%; max-width: 550px; height: 400px;">
       <div class="flex items-center justify-between mb-4">
         <div class="flex items-center gap-2">
           <span class="text-3xl">😊</span>
-          <h1 class="text-xl font-bold text-purple-600">ردیاب احساسات روزانه</h1>
+          <h1 class="text-xl font-bold text-purple-600 dark:text-black">ردیاب احساسات روزانه</h1>
         </div>
-        <span class="text-sm text-gray-500">{{ todayDate }}</span>
+        <span class="text-sm text-gray-500 dark:text-gray-800">{{ todayDate }}</span>
       </div>
 
       <div class="grid grid-cols-3 gap-2 mb-4">
-        <button @click="addMoodEntry('happy')" class="mood-btn bg-green-300 p-2 rounded-lg animation3">
+        <button @click="addMoodEntry('happy')" class="mood-btn bg-green-300 hover:bg-green-400 p-2 rounded-lg animation3 dark:bg-green-500 dark:hover:bg-green-600 dark:text-white">
           😊 شاد
         </button>
-        <button @click="addMoodEntry('sad')" class="mood-btn bg-blue-300 p-2 rounded-lg animation2">
+        <button @click="addMoodEntry('sad')" class="mood-btn bg-blue-300 hover:bg-blue-400 p-2 rounded-lg animation2 dark:bg-blue-500 dark:hover:bg-blue-600 dark:text-white">
           😢 ناراحت
         </button>
-        <button @click="addMoodEntry('angry')" class="mood-btn bg-red-300 p-2 rounded-lg animation1">
+        <button @click="addMoodEntry('angry')" class="mood-btn bg-red-300 hover:bg-red-400 p-2 rounded-lg animation1 dark:bg-red-500 dark:hover:bg-red-600 dark:text-white">
           😠 عصبانی
         </button>
       </div>
@@ -172,14 +172,14 @@
 
       <div class="flex items-center justify-between">
         <div class="flex gap-2">
-          <div class="bg-purple-100 px-3 py-1 rounded-full text-sm">
+          <div class="bg-purple-100 px-3 py-1 rounded-full text-sm dark:bg-purple-300 dark:text-white">
             📊 مجموع: <span>{{ moodData.entries.length }}</span>
           </div>
-          <div class="bg-green-100 px-3 py-1 rounded-full text-sm">
+          <div class="bg-green-100 px-3 py-1 rounded-full text-sm  dark:bg-green-300 dark:text-white">
             🏆 بهترین روز: <span>{{ bestDay }}</span>
           </div>
         </div>
-        <button @click="resetMoodData" class="text-red-400 hover:text-red-600 text-sm">
+        <button @click="resetMoodData" class="text-red-400 hover:text-red-600 text-sm dark:text-red-600 dark:hover:text-red-800">
           🔄 بازنشانی
         </button>
       </div>
@@ -187,25 +187,25 @@
 
     <!-- Goals and Weekly Tasks Component -->
     <div class="relative mb-20">
-      <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl p-6 space-y-6">
+      <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl p-6 space-y-6 dark:bg-slate-600">
         <div class="text-center">
-          <h1 class="text-3xl font-bold text-purple-800">اهداف طلایی من ✨</h1>
-          <p class="text-gray-600 mt-2">هر روز یک قدم به رویاهام نزدیک‌تر میشم 💪</p>
+          <h1 class="text-3xl font-bold text-purple-800 dark:text-white">اهداف طلایی من ✨</h1>
+          <p class="text-gray-600 mt-2 dark:text-white">هر روز یک قدم به رویاهام نزدیک‌تر میشم 💪</p>
         </div>
 
         <div class="space-y-4">
           <div class="flex items-center gap-4">
             <input type="text" v-model="newGoal.text" placeholder="هدف جدید" 
-                   class="w-full p-2 border-2 border-dashed border-purple-300 rounded-lg focus:outline-none focus:border-purple-500" />
+                   class="w-full p-2 border-2 border-dashed border-purple-300 rounded-lg focus:outline-none focus:border-purple-500 dark:text-white" />
             <input type="date" v-model="newGoal.date" 
-                   class="p-2 border-2 border-purple-300 rounded-lg focus:outline-none focus:border-purple-500" />
-            <button @click="addGoal" class="p-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600">➕</button>
+                   class="p-2 border-2 border-purple-300 rounded-lg focus:outline-none focus:border-purple-500 dark:text-white" />
+            <button @click="addGoal" class="p-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 dark:bg-purple-700 dark:hover:bg-purple-800">➕</button>
           </div>
           <div class="space-y-2">
             <div v-for="goal in goals" :key="goal.id" class="flex items-center gap-4">
-              <input type="text" :value="goal.text" class="w-full p-2 border-2 border-purple-300 rounded-lg" readonly />
-              <input type="date" :value="goal.date" class="p-2 border-2 border-purple-300 rounded-lg" readonly />
-              <button @click="toggleGoal(goal.id)" class="p-2 bg-purple-500 text-white rounded-lg">
+              <input type="text" :value="goal.text" class="w-full p-2 border-2 border-purple-300 rounded-lg dark:text-white" readonly />
+              <input type="date" :value="goal.date" class="p-2 border-2 border-purple-300 rounded-lg dark:text-white" readonly />
+              <button @click="toggleGoal(goal.id)" class="p-2 bg-purple-500 text-white rounded-lg dark:bg-purple-700">
                 {{ goal.completed ? '✅' : '⬜' }}
               </button>
               <button @click="deleteGoal(goal.id)" class="p-2 bg-red-500 text-white rounded-lg">🗑️</button>
@@ -214,17 +214,17 @@
         </div>
 
         <div class="text-center relative">
-          <h2 class="text-xl font-bold text-purple-800">پیشرفت من</h2>
+          <h2 class="text-xl font-bold text-purple-800 dark:text-white">پیشرفت من</h2>
           <div id="progressChart" class="w-64 h-64 mx-auto mt-4"></div>
-          <div class="text-2xl font-bold text-purple-800 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+          <div class="text-2xl font-bold text-purple-800 absolute top-1/2 left-1/2 transform -translate-x-1/2 dark:text-white">
             {{ progressPercentage }}%
           </div>
         </div>
         
         <div class="text-center">
-          <h2 class="text-xl font-bold text-purple-800">برنامه هفتگی</h2>
+          <h2 class="text-xl font-bold text-purple-800 dark:text-white">برنامه هفتگی</h2>
           <div class="grid grid-cols-3 gap-2 mt-4">
-            <div v-for="day in daysOfWeek" :key="day" class="bg-purple-100 rounded-lg p-2 cursor-pointer hover:bg-purple-200">
+            <div v-for="day in daysOfWeek" :key="day" class="bg-purple-100 rounded-lg p-2 cursor-pointer hover:bg-purple-200 dark:bg-purple-300 dark:hover:bg-purple-400">
               <div class="font-bold">{{ day }}</div>
               <div class="text-sm mt-1 space-y-1">
                 <div v-for="(task, taskIndex) in weeklyTasks[day]" :key="taskIndex" class="flex justify-between items-center bg-white p-1 rounded">
@@ -866,7 +866,6 @@ onUnmounted(() => {
 }
 .animation1:hover {
   animation: shakeY 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.5s infinite;
-  background-color: oklch(0.885 0.062 18.334);
 }
 @keyframes shakeY {
   0%, 100% { transform: translateY(0); }
@@ -883,7 +882,6 @@ onUnmounted(() => {
 .animation2:hover {
   animation: swing 2s cubic-bezier(0.4, 0, 0.2, 1) 0.3s 3;
   transform-origin: top center;
-  background-color: oklch(0.882 0.059 254.128);
 }
 @keyframes swing {
   0% { transform: rotate(0deg); }
@@ -895,7 +893,6 @@ onUnmounted(() => {
 }
 .animation3:hover {
   animation: tada 1.5s cubic-bezier(0.4, 0, 0.2, 1) 0.5s 2;
-  background-color: oklch(0.925 0.084 155.995);
 }
 @keyframes tada {
   0% { transform: scale(1); }
