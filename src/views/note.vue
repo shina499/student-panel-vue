@@ -2,7 +2,7 @@
   <section class="  bg-blue-50 min-h-screen p-6 dark:bg-slate-900">
     <div class="container mx-auto max-w-3xl">
       <!-- عنوان -->
-      <h1 class="text-3xl font-bold text-center text-gray-800 mb-6 animate__animated animate__fadeInDown dark:text-white">
+      <h1 class="text-3xl font-bold text-center text-gray-800 mb-6 animate__animated animate__fadeInDown dark:text-white" data-en="My Notes ✏️" data-fa="یادداشت‌های من ✏️">
         یادداشت‌های من ✏️
       </h1>
 
@@ -13,10 +13,12 @@
           type="text"
           placeholder="یادداشت جدید بنویسید..."
           class="w-full p-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 mb-4 dark:text-white"
+          data-en="Write a new note..." data-fa="یادداشت جدید بنویسید..."
         />
         <button
           @click="addNote"
           class="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white px-6 py-3 rounded-xl hover:from-blue-600 hover:to-purple-600 transition-all duration-300"
+          data-en="➕ Add Note" data-fa="➕ افزودن یادداشت"
         >
           ➕ افزودن یادداشت
         </button>
@@ -42,12 +44,14 @@
               <button
                 @click="toggleEdit(note)"
                 class="edit-btn px-3 py-1 bg-blue-100 text-blue-600 rounded-lg hover:bg-blue-200 transition-all duration-200 dark:text-white dark:bg-blue-900 dark:hover:bg-blue-950"
+                :data-en="note.editing ? '💾 Save' : '✏️ Edit'" :data-fa="note.editing ? '💾 ذخیره' : '✏️ ویرایش'"
               >
                 {{ note.editing ? '💾 ذخیره' : '✏️ ویرایش' }}
               </button>
               <button
                 @click="deleteNote(note.id)"
                 class="delete-btn px-3 py-1 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition-all duration-200 dark:text-white dark:bg-red-900 dark:hover:bg-red-950"
+                data-en="🗑️ Delete" data-fa="🗑️ حذف"
               >
                 🗑️ حذف
               </button>

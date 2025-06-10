@@ -24,10 +24,10 @@ onUnmounted(() => {
 });
 
 const menuItems = [
-  { path: '/', name: "داشبورد دانش آموزی📚🖋️", bgClass: "bg-red-200", buttonClass: "bg-red-500", shadowColor: "shadow-red-500", buttonHover: "hover:bg-red-600", buttonText: "پیش به سوی آن!" },
-  { path: '/exam', name: "پنل امتحانات📔🗂️", bgClass: "bg-lime-200", buttonClass: "bg-lime-500", shadowColor: "shadow-lime-500", buttonHover: "hover:bg-lime-600", buttonText: "بریم ببینیم!" },
-  { path: '/salamat', name: "پنل سلامت🩺🥼", bgClass: "bg-sky-100", buttonClass: "bg-sky-500", shadowColor: "shadow-sky-500", buttonHover: "hover:bg-sky-600", buttonText: "بزن بریم!" },
-  { path: '/note', name: "دفترچه یادداشت📒✏️", bgClass: "bg-yellow-200", buttonClass: "bg-yellow-500", shadowColor: "shadow-yellow-500", buttonHover: "hover:bg-yellow-600", buttonText: "ورود به دفترچه یادداشت" }
+  { path: '/', name: "داشبورد دانش آموزی📚🖋️", bgClass: "bg-red-200", buttonClass: "bg-red-500", shadowColor: "shadow-red-500", buttonHover: "hover:bg-red-600", buttonText: "پیش به سوی آن!", nameEn: "Student Dashboard", nameFa: "داشبورد دانش آموزی" },
+  { path: '/exam', name: "پنل امتحانات📔🗂️", bgClass: "bg-lime-200", buttonClass: "bg-lime-500", shadowColor: "shadow-lime-500", buttonHover: "hover:bg-lime-600", buttonText: "بریم ببینیم!", nameEn: "Exam Panel", nameFa: "پنل امتحانات" },
+  { path: '/salamat', name: "پنل سلامت🩺🥼", bgClass: "bg-sky-100", buttonClass: "bg-sky-500", shadowColor: "shadow-sky-500", buttonHover: "hover:bg-sky-600", buttonText: "بزن بریم!", nameEn: "Health Panel", nameFa: "پنل سلامت" },
+  { path: '/note', name: "دفترچه یادداشت📒✏️", bgClass: "bg-yellow-200", buttonClass: "bg-yellow-500", shadowColor: "shadow-yellow-500", buttonHover: "hover:bg-yellow-600", buttonText: "ورود به دفترچه یادداشت", nameEn: "Notebook", nameFa: "دفترچه یادداشت" }
 ];
 </script>
 
@@ -37,6 +37,7 @@ const menuItems = [
     v-if="isMobileOrTablet()"
     class="lg:hidden fixed top-4 right-4 z-50 bg-gray-800 text-white px-4 py-2 rounded-full shadow-md hover:bg-gray-700 transition"
     @click="toggleSidebar"
+    data-en="Menu" data-fa="منو"
   >
     ☰
   </button>
@@ -59,11 +60,12 @@ const menuItems = [
         v-if="isMobileOrTablet()"
         class="mb-4 text-red-500 font-bold"
         @click="toggleSidebar"
+        data-en="Close" data-fa="بستن"
       >
         ✖ بستن
       </button>
 
-      <h2 class="font-black text-2xl lg:text-3xl mb-6 text-center dark:text-white">پنل دسترسی سریع</h2>
+      <h2 class="font-black text-2xl lg:text-3xl mb-6 text-center dark:text-white" data-en="Quick Access Panel" data-fa="پنل دسترسی سریع">پنل دسترسی سریع</h2>
 
       <section class="flex flex-col justify-center items-center gap-6 bg-white dark:bg-slate-800">
         <div
@@ -75,7 +77,7 @@ const menuItems = [
             item.shadowColor
           ]"
         >
-          <h3 class="text-lg lg:text-2xl text-center px-2">{{ item.name }}</h3>
+          <h3 class="text-lg lg:text-2xl text-center px-2" :data-en="item.nameEn" :data-fa="item.name">{{ item.name }}</h3>
           <router-link :to="item.path">
             <button
               :class="[
@@ -83,6 +85,8 @@ const menuItems = [
                 item.buttonClass,
                 item.buttonHover
               ]"
+              :data-en="item.buttonTextEn"
+              :data-fa="item.buttonText"
             >
               {{ item.buttonText }}
             </button>
@@ -93,9 +97,9 @@ const menuItems = [
         <div
           class="w-full lg:w-[95%] h-[160px] lg:h-[200px] bg-purple-200 flex flex-col justify-center items-center gap-4 lg:gap-[30px] shadow-purple-500 shadow-xl"
         >
-          <h3 class="text-lg lg:text-2xl">ربات همکلاسی 🤖</h3>
+          <h3 class="text-lg lg:text-2xl" data-en="Classmate Bot 🤖" data-fa="ربات همکلاسی 🤖">ربات همکلاسی 🤖</h3>
           <a target="_blank" href="https://t.me/Hamekelasit_bot">
-            <button class="px-3 py-2 lg:px-4 lg:py-3 bg-purple-500 text-white hover:bg-purple-600 rounded text-sm lg:text-base">
+            <button class="px-3 py-2 lg:px-4 lg:py-3 bg-purple-500 text-white hover:bg-purple-600 rounded text-sm lg:text-base" data-en="Enter Telegram Bot" data-fa="ورود به ربات تلگرام">
               ورود به ربات تلگرام
             </button>
           </a>

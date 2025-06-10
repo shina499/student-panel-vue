@@ -6,14 +6,14 @@
         <div class="w-full md:w-[500px] h-auto bg-white rounded-3xl shadow-2xl flex flex-col overflow-hidden dark:bg-slate-900">
           <!-- هدر -->
           <div class="bg-gradient-to-r from-purple-600 to-blue-500 text-white p-6">
-            <h1 class="text-xl sm:text-2xl font-bold">📅 تقویم امتحانی</h1>
+            <h1 class="text-xl sm:text-2xl font-bold" data-en="Exam Calendar" data-fa="تقویم امتحانی">📅 تقویم امتحانی</h1>
             <p class="text-sm opacity-80 mt-1">{{ todayStr }}</p>
           </div>
           <!-- محتوا -->
           <div class="flex-1 p-4 overflow-y-auto">
             <!-- کارت امتحانات امروز -->
             <div class="bg-purple-50 p-4 rounded-xl mb-4 dark:bg-slate-900 dark:shadow-slate-950 dark:shadow-2xl">
-              <h2 class="text-lg font-bold text-purple-600 mb-2">امتحانات امروز</h2>
+              <h2 class="text-lg font-bold text-purple-600 mb-2" data-en="Today's Exams" data-fa="امتحانات امروز">امتحانات امروز</h2>
               <div class="space-y-2">
                 <div
                   v-for="exam in todayExams"
@@ -29,18 +29,19 @@
                   <button
                     @click="deleteExam(exam.id)"
                     class="text-red-500 hover:text-red-600 transition-colors"
+                    data-en="Delete" data-fa="حذف"
                   >
                     ✕
                   </button>
                 </div>
-                <p v-if="!todayExams.length" class="text-gray-500 text-sm">
+                <p v-if="!todayExams.length" class="text-gray-500 text-sm" data-en="No exams for today!" data-fa="امتحانی برای امروز ندارید!">
                   امتحانی برای امروز ندارید!
                 </p>
               </div>
             </div>
             <!-- لیست امتحانات آینده -->
             <div>
-              <h2 class="text-lg font-bold text-blue-600 mb-2">امتحانات آینده</h2>
+              <h2 class="text-lg font-bold text-blue-600 mb-2" data-en="Upcoming Exams" data-fa="امتحانات آینده">امتحانات آینده</h2>
               <div class="max-h-64 overflow-y-auto space-y-2">
                 <div
                   v-for="exam in upcomingExams"
@@ -56,11 +57,12 @@
                   <button
                     @click="deleteExam(exam.id)"
                     class="text-red-500 hover:text-red-600 transition-colors"
+                    data-en="Delete" data-fa="حذف"
                   >
                     ✕
                   </button>
                 </div>
-                <p v-if="!upcomingExams.length" class="text-gray-500 text-sm">
+                <p v-if="!upcomingExams.length" class="text-gray-500 text-sm" data-en="No upcoming exams!" data-fa="امتحانی در آینده نزدیک ندارید!">
                   امتحانی در آینده نزدیک ندارید!
                 </p>
               </div>
@@ -74,6 +76,7 @@
                 type="text"
                 placeholder="📝 عنوان امتحان"
                 class="w-full p-2 border-2 border-purple-100 rounded-xl focus:border-purple-400 transition-all dark:text-white"
+                data-en="📝 Exam Title" data-fa="📝 عنوان امتحان"
               />
               <input
                 v-model="examDate"
@@ -83,6 +86,7 @@
               <button
                 @click="addExam"
                 class="w-full sm:w-auto bg-purple-600 text-white px-4 py-2 rounded-xl hover:bg-purple-700 transition-all shadow-md"
+                data-en="Add" data-fa="افزودن"
               >
                 ➕
               </button>
@@ -95,12 +99,12 @@
       <div
         class="card bg-white border-gray-100 p-6 rounded-lg shadow-lg w-full md:w-[600px] h-[600px] sm:h-[1000px] mb-10 overflow-y-auto dark:bg-slate-900 dark:border-slate-950"
       >
-        <h1 class="text-2xl sm:text-3xl font-bold text-center text-blue-700 mb-6 dark:text-white">
+        <h1 class="text-2xl sm:text-3xl font-bold text-center text-blue-700 mb-6 dark:text-white" data-en="Student Grades Panel" data-fa="پنل نمرات دانش‌آموزی">
           پنل نمرات دانش‌آموزی
         </h1>
         <!-- فیلد نام درس -->
         <div class="mb-4">
-          <label for="studentName" class="block text-gray-700 dark:text-white">نام درس:</label>
+          <label for="studentName" class="block text-gray-700 dark:text-white" data-en="Course Name:" data-fa="نام درس:">نام درس:</label>
           <input
             v-model="gradeStudentName"
             type="text"
@@ -109,7 +113,7 @@
         </div>
         <!-- فیلد تاریخ -->
         <div class="mb-4">
-          <label for="date" class="block text-gray-700 dark:text-white">تاریخ:</label>
+          <label for="date" class="block text-gray-700 dark:text-white" data-en="Date:" data-fa="تاریخ:">تاریخ:</label>
           <input
             v-model="gradeDate"
             type="date"
@@ -118,7 +122,7 @@
         </div>
         <!-- فیلد نمرات -->
         <div class="mb-4">
-          <label for="grades" class="block text-gray-700 dark:text-white"
+          <label for="grades" class="block text-gray-700 dark:text-white" data-en="Grades (separate with commas):" data-fa="نمرات (با کاما جدا کنید):"
             >نمرات (با کاما جدا کنید):</label
           >
           <input
@@ -126,12 +130,14 @@
             type="text"
             class="w-full p-2 border border-gray-300 rounded mt-1 dark:text-white"
             placeholder="مثال: ۱۸, ۱۹, ۲۰"
+            data-en="Example: 18, 19, 20" data-fa="مثال: ۱۸, ۱۹, ۲۰"
           />
         </div>
         <!-- دکمه ذخیره -->
         <button
           @click="saveGradesHandler"
           class="w-full bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600"
+          data-en="Save Grades" data-fa="ذخیره نمرات"
         >
           ذخیره نمرات
         </button>
@@ -156,6 +162,7 @@
                   <button
                     @click="deleteGrade(entry.id)"
                     class="ml-auto text-gray-500 hover:text-red-500 transition-colors p-2 rounded-full hover:bg-white/20"
+                    data-en="Delete" data-fa="حذف"
                   >
                     <svg class="w-6 h-6 dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
@@ -174,7 +181,7 @@
                       </svg>
                     </div>
                     <div>
-                      <p class="text-sm text-gray-500 group-hover:text-purple-100 transition-colors duration-500 dark:text-gray-50">تاریخ ثبت</p>
+                      <p class="text-sm text-gray-500 group-hover:text-purple-100 transition-colors duration-500 dark:text-gray-50" data-en="Registration Date" data-fa="تاریخ ثبت">تاریخ ثبت</p>
                       <p class="font-medium text-gray-900 group-hover:text-white transition-colors duration-500 dark:text-white">{{ entry.date }}</p>
                     </div>
                   </li>
@@ -187,7 +194,7 @@
                       </svg>
                     </div>
                     <div>
-                      <p class="text-sm text-gray-500 group-hover:text-purple-100 transition-colors duration-500 dark:text-gray-50">نمرات</p>
+                      <p class="text-sm text-gray-500 group-hover:text-purple-100 transition-colors duration-500 dark:text-gray-50" data-en="Grades" data-fa="نمرات">نمرات</p>
                       <p class="font-medium text-gray-900 group-hover:text-white transition-colors duration-500 dark:text-white">{{ entry.grades.join(', ') }}</p>
                     </div>
                   </li>

@@ -4,11 +4,11 @@
     <div class="w-full max-w-[550px] h-[400px] bg-blue-200 rounded-2xl shadow-xl p-8 flex flex-col items-center animate__animated animate__fadeIn dark:bg-blue-600">
       <div class="flex items-center gap-3 mb-6">
         <span class="text-4xl">💧</span>
-        <h1 class="text-2xl font-bold text-blue-600 dark:text-white">آب مصرفی امروز</h1>
+        <h1 class="text-2xl font-bold text-blue-600 dark:text-white" data-en="Today's Water Consumption" data-fa="آب مصرفی امروز">آب مصرفی امروز</h1>
       </div>
 
       <div class="flex items-center gap-6 mb-8">
-        <button @click="changeCount(-1)" class="p-3 rounded-xl bg-red-100 hover:bg-red-200 text-red-500 text-2xl transition-all dark:bg-red-400 dark:hover:bg-red-500 dark:text-red-700">
+        <button @click="changeCount(-1)" class="p-3 rounded-xl bg-red-100 hover:bg-red-200 text-red-500 text-2xl transition-all dark:bg-red-400 dark:hover:bg-red-500 dark:text-red-700" data-en="Decrease" data-fa="کاهش">
           🥤-
         </button>
         
@@ -17,7 +17,7 @@
           <span class="text-2xl text-blue-300 dark:text-sky-100">/8</span>
         </div>
         
-        <button @click="changeCount(1)" class="p-3 rounded-xl bg-blue-300 hover:bg-blue-400 text-blue-500 text-2xl transition-all dark:bg-blue-400 dark:hover:bg-blue-500 dark:text-blue-700">
+        <button @click="changeCount(1)" class="p-3 rounded-xl bg-blue-300 hover:bg-blue-400 text-blue-500 text-2xl transition-all dark:bg-blue-400 dark:hover:bg-blue-500 dark:text-blue-700" data-en="Increase" data-fa="افزایش">
           🥤+
         </button>
       </div>
@@ -29,7 +29,7 @@
 
       <div class="flex items-center justify-between w-full mt-auto">
         <div class="text-lg text-blue-400 dark:text-white">{{ getStatusText() }}</div>
-        <button @click="resetCount" class="text-gray-400 hover:text-blue-500 transition-colors flex items-center gap-2 dark:text-white dark:hover:text-sky-200">
+        <button @click="resetCount" class="text-gray-400 hover:text-blue-500 transition-colors flex items-center gap-2 dark:text-white dark:hover:text-sky-200" data-en="Reset" data-fa="بازنشانی">
           🔄 بازنشانی
         </button>
       </div>
@@ -38,7 +38,7 @@
     <!-- Exercise Manager Component -->
     <div class="w-full max-w-[550px] h-[400px] rounded-2xl shadow-xl p-6 flex flex-col animate__animated animate__fadeIn bg">
       <div class="flex items-center gap-3 mb-4">
-        <h1 class="text-2xl font-bold text-green-600 bg-white p-2">🏃‍♀️ مدیریت ورزش روزانه</h1>
+        <h1 class="text-2xl font-bold text-green-600 bg-white p-2" data-en="🏃‍♀️ Daily Exercise Management" data-fa="🏃‍♀️ مدیریت ورزش روزانه">🏃‍♀️ مدیریت ورزش روزانه</h1>
       </div>
 
       <div class="flex-1 flex flex-col items-center justify-center">
@@ -46,10 +46,11 @@
         
         <div class="flex gap-3">
           <button @click="toggleTimer" :class="timer.isRunning ? 'bg-yellow-500' : 'bg-green-500'" 
-                  class="px-5 py-2 hover:bg-green-600 text-white rounded-lg transition-colors">
+                  class="px-5 py-2 hover:bg-green-600 text-white rounded-lg transition-colors"
+                  :data-en="timer.isRunning ? '⏸ Pause' : '▶ Start'" :data-fa="timer.isRunning ? '⏸ توقف' : '▶ شروع'">
             {{ timer.isRunning ? '⏸ توقف' : '▶ شروع' }}
           </button>
-          <button @click="saveWorkout" class="px-5 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors">
+          <button @click="saveWorkout" class="px-5 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors" data-en="💾 Save" data-fa="💾 ذخیره">
             💾 ذخیره
           </button>
         </div>
@@ -57,8 +58,8 @@
 
       <div class="border-t pt-4">
         <div class="flex items-center justify-between mb-2">
-          <h3 class="text-green-600 font-bold bg-white p-2">📅 تاریخچه هفتگی</h3>
-          <button @click="clearHistory" class="text-red-500 hover:text-red-700 text-sm bg-white p-2">
+          <h3 class="text-green-600 font-bold bg-white p-2" data-en="📅 Weekly History" data-fa="📅 تاریخچه هفتگی">📅 تاریخچه هفتگی</h3>
+          <button @click="clearHistory" class="text-red-500 hover:text-red-700 text-sm bg-white p-2" data-en="Clear History" data-fa="پاکسازی تاریخچه">
             پاکسازی تاریخچه
           </button>
         </div>
@@ -66,11 +67,11 @@
           <li v-for="workout in workoutHistory" :key="workout.id" class="flex justify-between items-center bg-gray-50 p-2 rounded">
             <div class="flex items-center gap-2">
               <span class="text-green-500">🔥 {{ workout.calories }}</span>
-              <span>کالری</span>
+              <span data-en="calories" data-fa="کالری">کالری</span>
             </div>
             <div class="flex items-center gap-3">
               <span class="text-xs text-gray-400">{{ workout.date }}</span>
-              <button @click="deleteWorkout(workout.id)" class="text-red-300 hover:text-red-500 transition-colors">
+              <button @click="deleteWorkout(workout.id)" class="text-red-300 hover:text-red-500 transition-colors" data-en="Delete" data-fa="حذف">
                 ✕
               </button>
             </div>
@@ -83,17 +84,17 @@
     <div class="w-full max-w-[550px] h-[400px] bg-pink-300 rounded-2xl shadow-xl p-6 flex flex-col animate__animated animate__fadeIn dark:bg-pink-400">
       <div class="flex items-center gap-3 mb-4">
         <span class="text-4xl">🌙</span>
-        <h1 class="text-2xl font-bold text-purple-600 bg-white p-2">الگوی خواب دانش‌آموزی</h1>
+        <h1 class="text-2xl font-bold text-purple-600 bg-white p-2" data-en="Student Sleep Pattern" data-fa="الگوی خواب دانش‌آموزی">الگوی خواب دانش‌آموزی</h1>
       </div>
 
       <div class="grid grid-cols-2 gap-4 mb-6">
         <div class="bg-purple-50 p-4 rounded-xl">
-          <label class="text-purple-500 mb-2 block">🛌 زمان خواب</label>
+          <label class="text-purple-500 mb-2 block" data-en="🛌 Bedtime" data-fa="🛌 زمان خواب">🛌 زمان خواب</label>
           <input type="time" v-model="bedtime" class="w-full p-2 rounded-lg border border-purple-200">
         </div>
         
         <div class="bg-purple-50 p-4 rounded-xl">
-          <label class="text-purple-500 mb-2 block">🌅 زمان بیداری</label>
+          <label class="text-purple-500 mb-2 block" data-en="🌅 Wake-up Time" data-fa="🌅 زمان بیداری">🌅 زمان بیداری</label>
           <input type="time" v-model="waketime" class="w-full p-2 rounded-lg border border-purple-200">
         </div>
       </div>
@@ -102,19 +103,19 @@
         <div class="flex items-center gap-2">
           <span class="text-2xl">⏳</span>
           <div>
-            <p class="text-sm text-purple-500">مدت خواب</p>
+            <p class="text-sm text-purple-500" data-en="Sleep Duration" data-fa="مدت خواب">مدت خواب</p>
             <p class="text-xl font-bold text-purple-600">{{ sleepDuration }}</p>
           </div>
         </div>
-        <button @click="calculateSleep" class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-lg transition-colors">
+        <button @click="calculateSleep" class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-lg transition-colors" data-en="Calculate" data-fa="محاسبه">
           محاسبه
         </button>
       </div>
 
       <div class="bg-purple-50 rounded-lg p-3 flex-1 overflow-y-auto">
         <div class="flex items-center justify-between mb-2">
-          <h3 class="text-purple-600 font-bold">📅 تاریخچه خواب</h3>
-          <button @click="clearSleepHistory" class="text-purple-400 hover:text-purple-600 text-sm">
+          <h3 class="text-purple-600 font-bold" data-en="📅 Sleep History" data-fa="📅 تاریخچه خواب">📅 تاریخچه خواب</h3>
+          <button @click="clearSleepHistory" class="text-purple-400 hover:text-purple-600 text-sm" data-en="Clear" data-fa="پاکسازی">
             پاکسازی
           </button>
         </div>
@@ -138,19 +139,19 @@
       <div class="flex items-center justify-between mb-4">
         <div class="flex items-center gap-2">
           <span class="text-3xl">😊</span>
-          <h1 class="text-xl font-bold text-purple-600 dark:text-black">ردیاب احساسات روزانه</h1>
+          <h1 class="text-xl font-bold text-purple-600 dark:text-black" data-en="Daily Mood Tracker" data-fa="ردیاب احساسات روزانه">ردیاب احساسات روزانه</h1>
         </div>
         <span class="text-sm text-gray-500 dark:text-gray-800">{{ todayDate }}</span>
       </div>
 
       <div class="grid grid-cols-3 gap-2 mb-4">
-        <button @click="addMoodEntry('happy')" class="mood-btn bg-green-300 hover:bg-green-400 p-2 rounded-lg animation3 dark:bg-green-500 dark:hover:bg-green-600 dark:text-white">
+        <button @click="addMoodEntry('happy')" class="mood-btn bg-green-300 hover:bg-green-400 p-2 rounded-lg animation3 dark:bg-green-500 dark:hover:bg-green-600 dark:text-white" data-en="😊 Happy" data-fa="😊 شاد">
           😊 شاد
         </button>
-        <button @click="addMoodEntry('sad')" class="mood-btn bg-blue-300 hover:bg-blue-400 p-2 rounded-lg animation2 dark:bg-blue-500 dark:hover:bg-blue-600 dark:text-white">
+        <button @click="addMoodEntry('sad')" class="mood-btn bg-blue-300 hover:bg-blue-400 p-2 rounded-lg animation2 dark:bg-blue-500 dark:hover:bg-blue-600 dark:text-white" data-en="😢 Sad" data-fa="😢 ناراحت">
           😢 ناراحت
         </button>
-        <button @click="addMoodEntry('angry')" class="mood-btn bg-red-300 hover:bg-red-400 p-2 rounded-lg animation1 dark:bg-red-500 dark:hover:bg-red-600 dark:text-white">
+        <button @click="addMoodEntry('angry')" class="mood-btn bg-red-300 hover:bg-red-400 p-2 rounded-lg animation1 dark:bg-red-500 dark:hover:bg-red-600 dark:text-white" data-en="😠 Angry" data-fa="😠 عصبانی">
           😠 عصبانی
         </button>
       </div>
@@ -173,13 +174,13 @@
       <div class="flex items-center justify-between">
         <div class="flex gap-2">
           <div class="bg-purple-100 px-3 py-1 rounded-full text-sm dark:bg-purple-300 dark:text-white">
-            📊 مجموع: <span>{{ moodData.entries.length }}</span>
+            <span data-en="📊 Total:" data-fa="📊 مجموع:">📊 مجموع:</span> <span>{{ moodData.entries.length }}</span>
           </div>
           <div class="bg-green-100 px-3 py-1 rounded-full text-sm  dark:bg-green-300 dark:text-white">
-            🏆 بهترین روز: <span>{{ bestDay }}</span>
+            <span data-en="🏆 Best Day:" data-fa="🏆 بهترین روز:">🏆 بهترین روز:</span> <span>{{ bestDay }}</span>
           </div>
         </div>
-        <button @click="resetMoodData" class="text-red-400 hover:text-red-600 text-sm dark:text-red-600 dark:hover:text-red-800">
+        <button @click="resetMoodData" class="text-red-400 hover:text-red-600 text-sm dark:text-red-600 dark:hover:text-red-800" data-en="🔄 Reset" data-fa="🔄 بازنشانی">
           🔄 بازنشانی
         </button>
       </div>
@@ -189,14 +190,15 @@
     <div class="relative mb-20">
       <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl p-6 space-y-6 dark:bg-slate-600">
         <div class="text-center">
-          <h1 class="text-3xl font-bold text-purple-800 dark:text-white">اهداف طلایی من ✨</h1>
-          <p class="text-gray-600 mt-2 dark:text-white">هر روز یک قدم به رویاهام نزدیک‌تر میشم 💪</p>
+          <h1 class="text-3xl font-bold text-purple-800 dark:text-white" data-en="My Golden Goals ✨" data-fa="اهداف طلایی من ✨">اهداف طلایی من ✨</h1>
+          <p class="text-gray-600 mt-2 dark:text-white" data-en="Every day I get one step closer to my dreams 💪" data-fa="هر روز یک قدم به رویاهام نزدیک‌تر میشم 💪">هر روز یک قدم به رویاهام نزدیک‌تر میشم 💪</p>
         </div>
 
         <div class="space-y-4">
           <div class="flex items-center gap-4">
             <input type="text" v-model="newGoal.text" placeholder="هدف جدید" 
-                   class="w-full p-2 border-2 border-dashed border-purple-300 rounded-lg focus:outline-none focus:border-purple-500 dark:text-white" />
+                   class="w-full p-2 border-2 border-dashed border-purple-300 rounded-lg focus:outline-none focus:border-purple-500 dark:text-white"
+                   data-en="New Goal" data-fa="هدف جدید" />
             <input type="date" v-model="newGoal.date" 
                    class="p-2 border-2 border-purple-300 rounded-lg focus:outline-none focus:border-purple-500 dark:text-white" />
             <button @click="addGoal" class="p-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 dark:bg-purple-700 dark:hover:bg-purple-800">➕</button>
@@ -214,7 +216,7 @@
         </div>
 
         <div class="text-center relative">
-          <h2 class="text-xl font-bold text-purple-800 dark:text-white">پیشرفت من</h2>
+          <h2 class="text-xl font-bold text-purple-800 dark:text-white" data-en="my progress" data-fa="پیشرفت من">پیشرفت من</h2>
           <div id="progressChart" class="w-64 h-64 mx-auto mt-4"></div>
           <div class="text-2xl font-bold text-purple-800 absolute top-1/2 left-1/2 transform -translate-x-1/2 dark:text-white">
             {{ progressPercentage }}%
@@ -222,7 +224,7 @@
         </div>
         
         <div class="text-center">
-          <h2 class="text-xl font-bold text-purple-800 dark:text-white">برنامه هفتگی</h2>
+          <h2 class="text-xl font-bold text-purple-800 dark:text-white" data-en="weekly scudule" data-fa="برنامه هفتگی">برنامه هفتگی</h2>
           <div class="grid grid-cols-3 gap-2 mt-4">
             <div v-for="day in daysOfWeek" :key="day" class="bg-purple-100 rounded-lg p-2 cursor-pointer hover:bg-purple-200 dark:bg-purple-300 dark:hover:bg-purple-400">
               <div class="font-bold">{{ day }}</div>
@@ -233,7 +235,7 @@
                 </div>
                 <div class="mt-2">
                   <input v-model="newTask[day]" placeholder="اضافه کردن کار" class="p-1 w-full rounded-md border-2 border-gray-200" />
-                  <button @click="addTask(day)" class="bg-purple-500 text-white px-3 py-1 mt-2 rounded-md">افزودن</button>
+                  <button @click="addTask(day)" class="bg-purple-500 text-white px-3 py-1 mt-2 rounded-md" data-en="add" data-fa="افزودن">افزودن</button>
                 </div>
               </div>
             </div>

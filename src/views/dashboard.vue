@@ -4,29 +4,29 @@
       <!-- کارت ۱: تحلیل فعالیت هفتگی -->
       <div class="card bg-white rounded-2xl shadow-xl p-6 animate__animated animate__bounceIn w-full max-w-lg dark:bg-slate-900 dark:text-white">
         <div class="flex items-center justify-between mb-4">
-          <h1 class="text-xl font-bold text-purple-600">📊 تحلیل فعالیت هفتگی</h1>
+          <h1 class="text-xl font-bold text-purple-600" data-en="Weekly Activity Analysis" data-fa="تحلیل فعالیت هفتگی">📊 تحلیل فعالیت هفتگی</h1>
           <div class="flex gap-2">
-            <span class="px-2 py-1 bg-green-100 text-green-600 rounded-full text-sm">🎯 هدف: ۳۵ ساعت</span>
-            <span class="px-2 py-1 bg-blue-100 text-blue-600 rounded-full text-sm">📅 هفته جاری</span>
+            <span class="px-2 py-1 bg-green-100 text-green-600 rounded-full text-sm" data-en="Goal: 35 hours" data-fa="هدف: ۳۵ ساعت">🎯 هدف: ۳۵ ساعت</span>
+            <span class="px-2 py-1 bg-blue-100 text-blue-600 rounded-full text-sm" data-en="Current Week" data-fa="هفته جاری">📅 هفته جاری</span>
           </div>
         </div>
         <div id="activity-chart" class="dark:text-white"></div>
         <div class="grid grid-cols-4 gap-2 mt-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 justify-center sm:gap-6 md:gap-2">
           <div class="flex items-center gap-1 justify-center">
             <div class="w-3 h-3 bg-[#6366f1] rounded-full"></div>
-            <span class="text-sm">مطالعه</span>
+            <span class="text-sm" data-en="Study" data-fa="مطالعه">مطالعه</span>
           </div>
           <div class="flex items-center gap-1 justify-center">
             <div class="w-3 h-3 bg-[#10b981] rounded-full"></div>
-            <span class="text-sm">ورزش</span>
+            <span class="text-sm" data-en="Exercise" data-fa="ورزش">ورزش</span>
           </div>
           <div class="flex items-center gap-1 justify-center">
             <div class="w-3 h-3 bg-[#f59e0b] rounded-full"></div>
-            <span class="text-sm">سرگرمی</span>
+            <span class="text-sm" data-en="Entertainment" data-fa="سرگرمی">سرگرمی</span>
           </div>
           <div class="flex items-center gap-1 justify-center">
             <div class="w-3 h-3 bg-[#ef4444] rounded-full"></div>
-            <span class="text-sm">استراحت</span>
+            <span class="text-sm" data-en="Rest" data-fa="استراحت">استراحت</span>
           </div>
         </div>
       </div>
@@ -35,17 +35,19 @@
       <div class="card bg-gray-50 rounded-xl animate__animated animate__bounceIn w-full max-w-lg mt-4 dark:bg-slate-900 dark:text-white">
         <div class="container mx-auto p-4">
           <div class="bg-white rounded-lg p-6 dark:bg-slate-950 dark:shadow-slate-950 shadow-2xl">
-            <h1 class="text-2xl font-bold text-center mb-6 text-gray-800 dark:text-white">لیست تکالیف دانش‌آموزی</h1>
+            <h1 class="text-2xl font-bold text-center mb-6 text-gray-800 dark:text-white" data-en="Student Homework List" data-fa="لیست تکالیف دانش‌آموزی">لیست تکالیف دانش‌آموزی</h1>
             <div class="flex gap-2 mb-4">
               <input
                 v-model="todoText"
                 type="text"
                 placeholder="تکلیف جدید..."
                 class="flex-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                data-en="New homework..." data-fa="تکلیف جدید..."
               />
               <button
                 @click="addTodo"
                 class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors animate__animated animate__jackInTheBox"
+                data-en="Add" data-fa="افزودن"
               >
                 افزودن
               </button>
@@ -65,13 +67,14 @@
                 <button
                   @click="deleteTodo(todo.id)"
                   class="text-red-500 hover:text-red-700 transition-colors"
+                  data-en="Delete" data-fa="حذف"
                 >
                   ×
                 </button>
               </li>
             </ul>
             <div class="mt-4 text-sm text-gray-500 text-center">
-              تعداد تکالیف: <span>{{ todos.length }}</span>
+              <span data-en="Number of tasks:" data-fa="تعداد تکالیف:">تعداد تکالیف:</span> <span>{{ todos.length }}</span>
             </div>
           </div>
         </div>
@@ -80,23 +83,23 @@
       <!-- کارت ۳: برنامه هفتگی -->
       <div class="card bg-gray-50 flex flex-col items-center justify-center p-4 week w-full max-w-lg mt-4 dark:bg-slate-900 ">
         <div class="w-full">
-          <h1 class="text-2xl font-bold text-center mb-4 text-gray-800 animate__animated animate__fadeIn dark:text-white">
+          <h1 class="text-2xl font-bold text-center mb-4 text-gray-800 animate__animated animate__fadeIn dark:text-white" data-en="Weekly Schedule" data-fa="برنامه هفتگی">
             برنامه هفتگی
           </h1>
           <table id="schedule" class="w-full bg-white rounded-lg shadow-sm animate__animated animate__fadeInUp dark:border-black">
             <thead class="dark:border-black">
               <tr class="bg-gradient-to-r from-blue-400 to-purple-400 text-white">
-                <th class="p-2">زنگ</th>
-                <th class="p-2">شنبه</th>
-                <th class="p-2">یکشنبه</th>
-                <th class="p-2">دوشنبه</th>
-                <th class="p-2">سه‌شنبه</th>
-                <th class="p-2">چهارشنبه</th>
+                <th class="p-2" data-en="Period" data-fa="زنگ">زنگ</th>
+                <th class="p-2" data-en="Saturday" data-fa="شنبه">شنبه</th>
+                <th class="p-2" data-en="Sunday" data-fa="یکشنبه">یکشنبه</th>
+                <th class="p-2" data-en="Monday" data-fa="دوشنبه">دوشنبه</th>
+                <th class="p-2" data-en="Tuesday" data-fa="سه‌شنبه">سه‌شنبه</th>
+                <th class="p-2" data-en="Wednesday" data-fa="چهارشنبه">چهارشنبه</th>
               </tr>
             </thead>
             <tbody class="dark:border-black">
               <tr v-for="(period, rowIndex) in periods" :key="period">
-                <td class="p-2 font-bold bg-gray-100 text-center">{{ period }}</td>
+                <td class="p-2 font-bold bg-gray-100 text-center" :data-en="'Period ' + (rowIndex + 1)" :data-fa="period">{{ period }}</td>
                 <td
                   v-for="(day, colIndex) in days"
                   :key="day"
@@ -113,6 +116,7 @@
           <button
             @click="saveSchedule"
             class="mt-4 w-full bg-gradient-to-r from-green-400 to-blue-400 text-white px-4 py-2 rounded-lg hover:from-green-500 hover:to-blue-500 animate__animated animate__fadeIn"
+            data-en="Save Schedule" data-fa="ذخیره برنامه"
           >
             ذخیره برنامه
           </button>
@@ -123,7 +127,7 @@
       <div class="card bg-white rounded-2xl shadow-xl p-6 flex flex-col items-center animate__animated animate__bounceIn w-full max-w-lg mt-4 dark:bg-slate-900 ">
         <div class="flex items-center gap-3 mb-6">
           <span class="text-4xl">🎯</span>
-          <h1 class="text-2xl font-bold text-blue-600 dark:text-white">سیستم تمرکز هوشمند</h1>
+          <h1 class="text-2xl font-bold text-blue-600 dark:text-white" data-en="Smart Focus System" data-fa="سیستم تمرکز هوشمند">سیستم تمرکز هوشمند</h1>
         </div>
         <div class="relative">
           <svg width="200" height="200">
@@ -136,25 +140,25 @@
           </svg>
           <div class="absolute inset-0 flex flex-col items-center justify-center">
             <div id="time" class="text-4xl font-bold text-blue-600 dark:text-blue-400">25:00</div>
-            <div id="status" class="text-blue-400 dark:text-blue-200">آماده</div>
+            <div id="status" class="text-blue-400 dark:text-blue-200" data-en="Ready" data-fa="آماده">آماده</div>
           </div>
         </div>
         <div class="flex gap-4 mt-6">
-          <button id="startBtn" class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+          <button id="startBtn" class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors" data-en="Start" data-fa="شروع">
             ▶ شروع
           </button>
-          <button id="resetBtn" class="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors">
+          <button id="resetBtn" class="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors" data-en="Reset" data-fa="تنظیم مجدد">
             🔄 تنظیم مجدد
           </button>
         </div>
         <div class="grid grid-cols-2 gap-4 mt-6 w-full">
           <div class="bg-blue-50 p-3 rounded-lg dark:bg-slate-950 dark:text-white">
-            <label class="block text-sm text-blue-500 mb-1">مدت مطالعه (دقیقه)</label>
+            <label class="block text-sm text-blue-500 mb-1" data-en="Study Duration (minutes)" data-fa="مدت مطالعه (دقیقه)">مدت مطالعه (دقیقه)</label>
             <input type="number" id="studyTime" value="25" min="0" 
                    class="w-full p-2 border border-blue-200 rounded-lg">
           </div>
           <div class="bg-blue-50 p-3 rounded-lg dark:bg-slate-950 dark:text-white">
-            <label class="block text-sm text-blue-500 mb-1">مدت استراحت (دقیقه)</label>
+            <label class="block text-sm text-blue-500 mb-1" data-en="Break Duration (minutes)" data-fa="مدت استراحت (دقیقه)">مدت استراحت (دقیقه)</label>
             <input type="number" id="breakTime" value="5" min="0"
                    class="w-full p-2 border border-blue-200 rounded-lg">
           </div>
