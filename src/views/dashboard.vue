@@ -67,7 +67,6 @@
                 <button
                   @click="deleteTodo(todo.id)"
                   class="text-red-500 hover:text-red-700 transition-colors"
-                  data-en="Delete" data-fa="حذف"
                 >
                   ×
                 </button>
@@ -89,7 +88,7 @@
           <table id="schedule" class="w-full bg-white rounded-lg shadow-sm animate__animated animate__fadeInUp dark:border-black">
             <thead class="dark:border-black">
               <tr class="bg-gradient-to-r from-blue-400 to-purple-400 text-white">
-                <th class="p-2" data-en="Period" data-fa="زنگ">زنگ</th>
+                <th class="p-2" data-en="session" data-fa="زنگ">زنگ</th>
                 <th class="p-2" data-en="Saturday" data-fa="شنبه">شنبه</th>
                 <th class="p-2" data-en="Sunday" data-fa="یکشنبه">یکشنبه</th>
                 <th class="p-2" data-en="Monday" data-fa="دوشنبه">دوشنبه</th>
@@ -99,7 +98,7 @@
             </thead>
             <tbody class="dark:border-black">
               <tr v-for="(period, rowIndex) in periods" :key="period">
-                <td class="p-2 font-bold bg-gray-100 text-center" :data-en="'Period ' + (rowIndex + 1)" :data-fa="period">{{ period }}</td>
+                <td class="p-2 font-bold bg-gray-100 text-center" :data-en="'session ' + (rowIndex + 1)" :data-fa="period">{{ period }}</td>
                 <td
                   v-for="(day, colIndex) in days"
                   :key="day"
@@ -169,6 +168,7 @@
 </template>
 
 <script setup>
+import { updateTexts } from '../utils/language'
 import { ref, reactive, onMounted } from 'vue';
 import pb from '@/pb';
 
@@ -514,6 +514,9 @@ onMounted(async () => {
     }
   }
   new FocusTimer();
+});
+onMounted(() => {
+  updateTexts();
 });
 </script>
 

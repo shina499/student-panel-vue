@@ -8,7 +8,7 @@
       </div>
 
       <div class="flex items-center gap-6 mb-8">
-        <button @click="changeCount(-1)" class="p-3 rounded-xl bg-red-100 hover:bg-red-200 text-red-500 text-2xl transition-all dark:bg-red-400 dark:hover:bg-red-500 dark:text-red-700" data-en="Decrease" data-fa="کاهش">
+        <button @click="changeCount(-1)" class="p-3 rounded-xl bg-red-100 hover:bg-red-200 text-red-500 text-2xl transition-all dark:bg-red-400 dark:hover:bg-red-500 dark:text-red-700">
           🥤-
         </button>
         
@@ -17,7 +17,7 @@
           <span class="text-2xl text-blue-300 dark:text-sky-100">/8</span>
         </div>
         
-        <button @click="changeCount(1)" class="p-3 rounded-xl bg-blue-300 hover:bg-blue-400 text-blue-500 text-2xl transition-all dark:bg-blue-400 dark:hover:bg-blue-500 dark:text-blue-700" data-en="Increase" data-fa="افزایش">
+        <button @click="changeCount(1)" class="p-3 rounded-xl bg-blue-300 hover:bg-blue-400 text-blue-500 text-2xl transition-all dark:bg-blue-400 dark:hover:bg-blue-500 dark:text-blue-700">
           🥤+
         </button>
       </div>
@@ -225,10 +225,11 @@
         
         <div class="text-center">
           <h2 class="text-xl font-bold text-purple-800 dark:text-white" data-en="weekly scudule" data-fa="برنامه هفتگی">برنامه هفتگی</h2>
-          <div class="grid grid-cols-3 gap-2 mt-4">
-            <div v-for="day in daysOfWeek" :key="day" class="bg-purple-100 rounded-lg p-2 cursor-pointer hover:bg-purple-200 dark:bg-purple-300 dark:hover:bg-purple-400">
+          <div class="grid grid-cols-3 gap-2 mt-4" >
+            <template >
+  <div v-for="day in daysOfWeek" :key="day" class="bg-purple-100 rounded-lg p-2 cursor-pointer hover:bg-purple-200 dark:bg-purple-300 dark:hover:bg-purple-400">
               <div class="font-bold">{{ day }}</div>
-              <div class="text-sm mt-1 space-y-1">
+              <div class="text-sm mt-1 space-y-1" >
                 <div v-for="(task, taskIndex) in weeklyTasks[day]" :key="taskIndex" class="flex justify-between items-center bg-white p-1 rounded">
                   <span>{{ task }}</span>
                   <button @click="removeTask(day, taskIndex)" class="text-red-500">×</button>
@@ -239,6 +240,8 @@
                 </div>
               </div>
             </div>
+            </template>
+          
           </div>
         </div>
       </div>
@@ -247,6 +250,7 @@
 </template>
 
 <script setup>
+import { updateTexts,getCurrentLang } from '../utils/language'
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 import pb from '@/pb';
 
@@ -694,7 +698,8 @@ const getMoodColor = (mood) => {
 // -------------------- ردیاب اهداف و برنامه هفتگی --------------------
 const goals = ref([]);
 const newGoal = ref({ text: '', date: '', completed: false });
-const daysOfWeek = ref(['شنبه', 'یک‌شنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنج‌شنبه']);
+const daysOfWeekfa = ref(['شنبه', 'یک‌شنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنج‌شنبه']);
+const daysOfWeeken = ref(['Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday']);
 const weeklyTasks = ref({});
 const newTask = ref({});
 let progressChart = null;
@@ -854,6 +859,9 @@ onUnmounted(() => {
   if (timer.value.interval) {
     clearInterval(timer.value.interval);
   }
+});
+onMounted(() => {
+  updateTexts();
 });
 </script>
 

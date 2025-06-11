@@ -29,7 +29,6 @@
                   <button
                     @click="deleteExam(exam.id)"
                     class="text-red-500 hover:text-red-600 transition-colors"
-                    data-en="Delete" data-fa="حذف"
                   >
                     ✕
                   </button>
@@ -57,7 +56,6 @@
                   <button
                     @click="deleteExam(exam.id)"
                     class="text-red-500 hover:text-red-600 transition-colors"
-                    data-en="Delete" data-fa="حذف"
                   >
                     ✕
                   </button>
@@ -162,7 +160,6 @@
                   <button
                     @click="deleteGrade(entry.id)"
                     class="ml-auto text-gray-500 hover:text-red-500 transition-colors p-2 rounded-full hover:bg-white/20"
-                    data-en="Delete" data-fa="حذف"
                   >
                     <svg class="w-6 h-6 dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
@@ -231,36 +228,36 @@
         class="w-full md:w-64 bg-gradient-to-b from-purple-600 to-blue-500 p-6 flex flex-col items-center"
       >
         <div class="text-white text-center mb-8">
-          <h2 class="text-xl sm:text-2xl font-bold mb-2">🏆 امتیاز کل</h2>
+          <h2 class="text-xl sm:text-2xl font-bold mb-2" data-en="total score 🏆" data-fa="🏆 امتیاز کل">🏆 امتیاز کل</h2>
           <div class="text-3xl sm:text-4xl font-black">{{ state.totalScore }}</div>
         </div>
         <div class="bg-white/20 p-4 rounded-xl w-full">
-          <h3 class="text-white font-bold mb-2">پیشرفت امروز</h3>
+          <h3 class="text-white font-bold mb-2" data-en="today progress" data-fa="پیشرفت امروز">پیشرفت امروز</h3>
           <div class="bg-gray-200 h-2 rounded-full mb-2">
             <div
               class="bg-yellow-400 h-2 rounded-full"
               :style="{ width: `${(state.dailyProgress / 4) * 100}%` }"
             ></div>
           </div>
-          <p class="text-white text-sm">{{ state.dailyProgress }}/4 سوال</p>
+          <p class="text-white text-sm"><span>{{ state.dailyProgress }}/4</span> <span data-fa="سوال" data-en="question">سوال</span></p>
         </div>
       </div>
       <!-- محتوا -->
       <div class="flex-1 p-8 overflow-y-auto">
         <h1 class="text-2xl sm:text-3xl font-bold text-purple-600 mb-6 dark:text-white">
-          چالش امروز 🗓️ <span class="text-lg sm:text-2xl">{{ todayStr }}</span>
+          <span data-en="today's challange 🗓️" data-fa="چالش امروز 🗓️">چالش امروز 🗓️</span> <span class="text-lg sm:text-2xl">{{ todayStr }}</span>
         </h1>
         <!-- سوالات علوم -->
         <div class="mb-8 animate__animated animate__fadeInLeft">
           <div class="bg-red-100 rounded-xl p-6 mb-4 dark:bg-red-900">
-            <h2 class="text-xl sm:text-2xl font-bold text-red-600 dark:text-white mb-4">🔬 علوم</h2>
+            <h2 class="text-xl sm:text-2xl font-bold text-red-600 dark:text-white mb-4" data-en="scince 🔬" data-fa="🔬 علوم">🔬 علوم</h2>
             <div class="space-y-4">
               <div
                 v-for="(q, index) in state.todayQuestions.science"
                 :key="`science-${index}`"
                 class="bg-white p-4 rounded-lg shadow-sm"
               >
-                <p class="font-bold mb-2">سوال {{ index + 1 }}: {{ q.question }}</p>
+                <p class="font-bold mb-2"><span data-fa="سوال" data-en="question">سوال</span> <span>{{ index + 1 }}: {{ q.question }}</span></p>
                 <div class="grid grid-cols-2 gap-2">
                   <button
                     
@@ -290,14 +287,14 @@
         <!-- سوالات ریاضی -->
         <div class="animate__animated animate__fadeInRight">
           <div class="bg-blue-100 rounded-xl p-6 dark:bg-blue-900">
-            <h2 class="text-xl sm:text-2xl font-bold text-blue-600 dark:text-white mb-4">🧮 ریاضی</h2>
+            <h2 class="text-xl sm:text-2xl font-bold text-blue-600 dark:text-white mb-4" data-en="math 🧮" data-fa="🧮 ریاضی">🧮 ریاضی</h2>
             <div class="space-y-4">
               <div
                 v-for="(q, index) in state.todayQuestions.math"
                 :key="`math-${index}`"
                 class="bg-white p-4 rounded-lg shadow-sm"
               >
-                <p class="font-bold mb-2">سوال {{ index + 1 }}: {{ q.question }}</p>
+                <p class="font-bold mb-2"><span data-fa="سوال" data-en="question">سوال</span> <span>{{ index + 1 }}: {{ q.question }}</span></p>
                 <div class="grid grid-cols-2 gap-2">
                   <button
                     v-for="option in q.options"
@@ -328,6 +325,7 @@
 </template>
 
 <script setup>
+import { updateTexts } from '../utils/language'
 import { onMounted, ref, computed } from 'vue';
 import pb from '@/pb';
 
@@ -679,6 +677,9 @@ onMounted(async () => {
   await loadExams();
   await loadGrades();
   initializeQuiz();
+});
+onMounted(() => {
+  updateTexts();
 });
 </script>
 

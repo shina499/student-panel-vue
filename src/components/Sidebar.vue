@@ -24,10 +24,10 @@ onUnmounted(() => {
 });
 
 const menuItems = [
-  { path: '/', name: "داشبورد دانش آموزی📚🖋️", bgClass: "bg-red-200", buttonClass: "bg-red-500", shadowColor: "shadow-red-500", buttonHover: "hover:bg-red-600", buttonText: "پیش به سوی آن!", nameEn: "Student Dashboard", nameFa: "داشبورد دانش آموزی" },
-  { path: '/exam', name: "پنل امتحانات📔🗂️", bgClass: "bg-lime-200", buttonClass: "bg-lime-500", shadowColor: "shadow-lime-500", buttonHover: "hover:bg-lime-600", buttonText: "بریم ببینیم!", nameEn: "Exam Panel", nameFa: "پنل امتحانات" },
-  { path: '/salamat', name: "پنل سلامت🩺🥼", bgClass: "bg-sky-100", buttonClass: "bg-sky-500", shadowColor: "shadow-sky-500", buttonHover: "hover:bg-sky-600", buttonText: "بزن بریم!", nameEn: "Health Panel", nameFa: "پنل سلامت" },
-  { path: '/note', name: "دفترچه یادداشت📒✏️", bgClass: "bg-yellow-200", buttonClass: "bg-yellow-500", shadowColor: "shadow-yellow-500", buttonHover: "hover:bg-yellow-600", buttonText: "ورود به دفترچه یادداشت", nameEn: "Notebook", nameFa: "دفترچه یادداشت" }
+  { path: '/', name: "داشبورد دانش آموزی📚🖋️", bgClass: "bg-red-200", buttonClass: "bg-red-500", shadowColor: "shadow-red-500", buttonHover: "hover:bg-red-600", buttonText: "پیش به سوی آن!", nameEn: "Student Dashboard 📚🖋️", nameFa: "داشبورد دانش آموزی" },
+  { path: '/exam', name: "پنل امتحانات📔🗂️", bgClass: "bg-lime-200", buttonClass: "bg-lime-500", shadowColor: "shadow-lime-500", buttonHover: "hover:bg-lime-600", buttonText: "بریم ببینیم!", nameEn: "Exam Panel 📔🗂️", nameFa: "پنل امتحانات" },
+  { path: '/salamat', name: "پنل سلامت🩺🥼", bgClass: "bg-sky-100", buttonClass: "bg-sky-500", shadowColor: "shadow-sky-500", buttonHover: "hover:bg-sky-600", buttonText: "بزن بریم!", nameEn: "Health Panel 🩺🥼", nameFa: "پنل سلامت" },
+  { path: '/note', name: "دفترچه یادداشت📒✏️", bgClass: "bg-yellow-200", buttonClass: "bg-yellow-500", shadowColor: "shadow-yellow-500", buttonHover: "hover:bg-yellow-600", buttonText: "ورود به دفترچه یادداشت", nameEn: "Notebook 📒✏️", nameFa: "دفترچه یادداشت" }
 ];
 </script>
 

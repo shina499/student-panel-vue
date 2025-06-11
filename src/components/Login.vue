@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-700 via-pink-500 to-blue-600">
     <div class="bg-white bg-opacity-20 backdrop-blur-xl rounded-3xl shadow-2xl p-10 w-full max-w-lg animate__animated animate__zoomIn dark:bg-slate-800 dark:text-white">
-      <h1 class="text-4xl font-bold  text-center mb-10 tracking-tight">ورود به پنل دانش‌آموزی 🌟</h1>
+      <h1 class="text-4xl font-bold  text-center mb-10 tracking-tight" data-fa="ورود به پنل دانش‌آموزی 🌟" data-en=" Login to Student Panel 🌟">ورود به پنل دانش‌آموزی 🌟</h1>
       
       <div class="relative mb-8">
         <i class="fas fa-envelope absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-300 text-lg"></i>
@@ -33,20 +33,21 @@
         class="w-full py-4 rounded-xl bg-gradient-to-r from-blue-600 to-purple-700  font-bold text-lg hover:from-blue-700 hover:to-purple-800 hover:rotate-1 transition-all duration-300 flex items-center justify-center shadow-lg"
       >
         <span v-if="isLoading">
-          <i class="fas fa-spinner fa-spin mr-2"></i> در حال ورود...
+          <i class="fas fa-spinner fa-spin mr-2"></i><span data-en="entering..." data-fa="در حال ورود...">در حال ورود...</span>
         </span>
-        <span v-else>ورود</span>
+        <span v-else data-en="enter" data-fa="ورود">ورود</span>
       </button>
 
       <p class="text-gray-200 text-sm text-center mt-6">
-        حساب ندارید؟ <router-link to="/signup" class="text-blue-300 hover:text-blue-400 font-medium">ثبت‌نام کنید</router-link>
+        <span data-fa="حساب ندارید ؟" data-en="don't have an account?"></span><router-link to="/signup" class="text-blue-300 hover:text-blue-400 font-medium"><span data-en="sign up" data-fa="ثبت نام کنید"></span></router-link>
       </p>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { updateTexts } from '../utils/language'
+import { ref,onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import pb from '@/pb';
 
@@ -73,6 +74,9 @@ const signIn = async () => {
     isLoading.value = false;
   }
 };
+onMounted(() => {
+  updateTexts();
+});
 </script>
 
 <style scoped>

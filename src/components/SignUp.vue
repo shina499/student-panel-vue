@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-200 to-pink-200">
     <div class="bg-white rounded-xl shadow-lg p-8 w-full max-w-md animate__animated animate__fadeInUp dark:bg-slate-800">
-      <h1 class="text-3xl font-bold text-pink-600 text-center mb-8 dark:text-white">ثبت‌نام در پنل دانش‌آموزی 🎉</h1>
+      <h1 class="text-3xl font-bold text-pink-600 text-center mb-8 dark:text-white" data-fa="ثبت‌نام در پنل دانش‌آموزی 🎉" data-en="sign in into student panel 🎉">ثبت‌نام در پنل دانش‌آموزی </h1>
       
       <div class="relative mb-6">
         <i class="fas fa-user absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-500"></i>
@@ -53,19 +53,20 @@
         class="w-full py-3 rounded-lg bg-pink-500 text-white font-bold hover:bg-pink-600 hover:-translate-y-1 transition-all duration-200 flex items-center justify-center"
       >
         <span v-if="isLoading">
-          <i class="fas fa-spinner fa-spin mr-2"></i> در حال ثبت‌نام...
+          <i class="fas fa-spinner fa-spin mr-2"></i> <span data-fa="در حال ثبت‌نام..." data-en="signing in ...">در حال ثبت‌نام...</span>
         </span>
-        <span v-else>ثبت‌نام</span>
+        <span data-en="sign in" data-fa="ثبت‌نام" v-else>ثبت‌نام</span>
       </button>
 
       <p class="text-gray-600 text-sm text-center mt-4">
-        حساب دارید؟ <router-link to="/login" class="text-blue-500 hover:text-blue-600 font-medium">وارد شوید</router-link>
+        <span data-fa="حساب دارید؟" data-en="already have an account?">حساب دارید؟ </span> <router-link to="/login" class="text-blue-500 hover:text-blue-600 font-medium"><span data-fa="وارد شوید" data-en="login">وارد شوید</span></router-link>
       </p>
     </div>
   </div>
 </template>
 
 <script setup>
+import { updateTexts } from '../utils/language'
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import pb from '@/pb';
@@ -128,6 +129,9 @@ const signUp = async () => {
     isLoading.value = false;
   }
 };
+onMounted(() => {
+  updateTexts();
+});
 </script>
 
 <style scoped>

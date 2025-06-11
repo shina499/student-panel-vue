@@ -64,6 +64,7 @@
 </template>
 
 <script setup>
+import { updateTexts } from '../utils/language'
 import { ref, onMounted } from 'vue';
 import pb from '@/pb';
 
@@ -176,5 +177,8 @@ const toggleEdit = (note) => {
 onMounted(async () => {
   console.log('وضعیت احراز هویت:', pb.authStore.isValid, pb.authStore.model);
   await loadNotes();
+});
+onMounted(() => {
+  updateTexts();
 });
 </script>
