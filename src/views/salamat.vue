@@ -226,8 +226,8 @@
         <div class="text-center">
           <h2 class="text-xl font-bold text-purple-800 dark:text-white" data-en="weekly scudule" data-fa="برنامه هفتگی">برنامه هفتگی</h2>
           <div class="grid grid-cols-3 gap-2 mt-4" >
-            <template >
-  <div v-for="day in daysOfWeek" :key="day" class="bg-purple-100 rounded-lg p-2 cursor-pointer hover:bg-purple-200 dark:bg-purple-300 dark:hover:bg-purple-400">
+            <template v-if="getCurrentLang() === 'fa'">
+  <div v-for="day in daysOfWeekfa" :key="day" class="bg-purple-100 rounded-lg p-2 cursor-pointer hover:bg-purple-200 dark:bg-purple-300 dark:hover:bg-purple-400">
               <div class="font-bold">{{ day }}</div>
               <div class="text-sm mt-1 space-y-1" >
                 <div v-for="(task, taskIndex) in weeklyTasks[day]" :key="taskIndex" class="flex justify-between items-center bg-white p-1 rounded">
@@ -236,6 +236,21 @@
                 </div>
                 <div class="mt-2">
                   <input v-model="newTask[day]" placeholder="اضافه کردن کار" class="p-1 w-full rounded-md border-2 border-gray-200" />
+                  <button @click="addTask(day)" class="bg-purple-500 text-white px-3 py-1 mt-2 rounded-md" data-en="add" data-fa="افزودن">افزودن</button>
+                </div>
+              </div>
+            </div>
+            </template>
+            <template v-else>
+  <div v-for="day in daysOfWeeken" :key="day" class="bg-purple-100 rounded-lg p-2 cursor-pointer hover:bg-purple-200 dark:bg-purple-300 dark:hover:bg-purple-400">
+              <div class="font-bold">{{ day }}</div>
+              <div class="text-sm mt-1 space-y-1" >
+                <div v-for="(task, taskIndex) in weeklyTasks[day]" :key="taskIndex" class="flex justify-between items-center bg-white p-1 rounded">
+                  <span>{{ task }}</span>
+                  <button @click="removeTask(day, taskIndex)" class="text-red-500">×</button>
+                </div>
+                <div class="mt-2">
+                  <input v-model="newTask[day]" placeholder="add new task" class="p-1 w-full rounded-md border-2 border-gray-200" />
                   <button @click="addTask(day)" class="bg-purple-500 text-white px-3 py-1 mt-2 rounded-md" data-en="add" data-fa="افزودن">افزودن</button>
                 </div>
               </div>
@@ -700,6 +715,7 @@ const goals = ref([]);
 const newGoal = ref({ text: '', date: '', completed: false });
 const daysOfWeekfa = ref(['شنبه', 'یک‌شنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنج‌شنبه']);
 const daysOfWeeken = ref(['Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday']);
+const daysOfWeek = ref(['شنبه', 'یک‌شنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنج‌شنبه']);
 const weeklyTasks = ref({});
 const newTask = ref({});
 let progressChart = null;
