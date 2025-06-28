@@ -6,7 +6,7 @@
         <div class="w-full md:w-[500px] h-auto bg-white rounded-3xl shadow-2xl flex flex-col overflow-hidden dark:bg-slate-900">
           <!-- هدر -->
           <div class="bg-gradient-to-r from-purple-600 to-blue-500 text-white p-6">
-            <h1 class="text-xl sm:text-2xl font-bold" data-en="Exam Calendar" data-fa="تقویم امتحانی">📅 تقویم امتحانی</h1>
+            <h3 class="text-xl sm:text-2xl font-bold" data-en="Exam Calendar" data-fa="تقویم امتحانی">📅 تقویم امتحانی</h3>
             <p class="text-sm opacity-80 mt-1">{{ todayStr }}</p>
           </div>
           <!-- محتوا -->
@@ -97,9 +97,9 @@
       <div
         class="card bg-white border-gray-100 p-6 rounded-lg shadow-lg w-full md:w-[600px] h-[600px] sm:h-[1000px] mb-10 overflow-y-auto dark:bg-slate-900 dark:border-slate-950"
       >
-        <h1 class="text-2xl sm:text-3xl font-bold text-center text-blue-700 mb-6 dark:text-white" data-en="Student Grades Panel" data-fa="پنل نمرات دانش‌آموزی">
+        <h class="text-2xl sm:text-3xl font-bold text-center text-blue-700 mb-6 dark:text-white" data-en="Student Grades Panel" data-fa="پنل نمرات دانش‌آموزی">
           پنل نمرات دانش‌آموزی
-        </h1>
+        </h>
         <!-- فیلد نام درس -->
         <div class="mb-4">
           <label for="studentName" class="block text-gray-700 dark:text-white" data-en="Course Name:" data-fa="نام درس:">نام درس:</label>
@@ -244,9 +244,9 @@
       </div>
       <!-- محتوا -->
       <div class="flex-1 p-8 overflow-y-auto">
-        <h1 class="text-2xl sm:text-3xl font-bold text-purple-600 mb-6 dark:text-white">
+        <h3 class="text-2xl sm:text-3xl font-bold text-purple-600 mb-6 dark:text-white">
           <span data-en="today's challange 🗓️" data-fa="چالش امروز 🗓️">چالش امروز 🗓️</span> <span class="text-lg sm:text-2xl">{{ todayStr }}</span>
-        </h1>
+        </h3>
         <!-- سوالات علوم -->
         <div class="mb-8 animate__animated animate__fadeInLeft">
           <div class="bg-red-100 rounded-xl p-6 mb-4 dark:bg-red-900">

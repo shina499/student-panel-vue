@@ -4,7 +4,7 @@
       <!-- کارت ۱: تحلیل فعالیت هفتگی -->
       <div class="card bg-white rounded-2xl shadow-xl p-6 animate__animated animate__bounceIn w-full max-w-lg dark:bg-slate-900 dark:text-white">
         <div class="flex items-center justify-between mb-4">
-          <h1 class="text-xl font-bold text-purple-600" data-en="Weekly Activity Analysis" data-fa="تحلیل فعالیت هفتگی">📊 تحلیل فعالیت هفتگی</h1>
+          <h3 class="text-xl font-bold text-purple-600" data-en="Weekly Activity Analysis" data-fa="تحلیل فعالیت هفتگی">📊 تحلیل فعالیت هفتگی</h3>
           <div class="flex gap-2">
             <span class="px-2 py-1 bg-green-100 text-green-600 rounded-full text-sm" data-en="Goal: 35 hours" data-fa="هدف: ۳۵ ساعت">🎯 هدف: ۳۵ ساعت</span>
             <span class="px-2 py-1 bg-blue-100 text-blue-600 rounded-full text-sm" data-en="Current Week" data-fa="هفته جاری">📅 هفته جاری</span>
@@ -35,7 +35,7 @@
       <div class="card bg-gray-50 rounded-xl animate__animated animate__bounceIn w-full max-w-lg mt-4 dark:bg-slate-900 dark:text-white">
         <div class="container mx-auto p-4">
           <div class="bg-white rounded-lg p-6 dark:bg-slate-950 dark:shadow-slate-950 shadow-2xl">
-            <h1 class="text-2xl font-bold text-center mb-6 text-gray-800 dark:text-white" data-en="Student Homework List" data-fa="لیست تکالیف دانش‌آموزی">لیست تکالیف دانش‌آموزی</h1>
+            <h3 class="text-2xl font-bold text-center mb-6 text-gray-800 dark:text-white" data-en="Student Homework List" data-fa="لیست تکالیف دانش‌آموزی">لیست تکالیف دانش‌آموزی</h3>
             <div class="flex gap-2 mb-4">
               <input
                 v-model="todoText"
@@ -82,9 +82,9 @@
       <!-- کارت ۳: برنامه هفتگی -->
       <div class="card bg-gray-50 flex flex-col items-center justify-center p-4 week w-full max-w-lg mt-4 dark:bg-slate-900 ">
         <div class="w-full">
-          <h1 class="text-2xl font-bold text-center mb-4 text-gray-800 animate__animated animate__fadeIn dark:text-white" data-en="Weekly Schedule" data-fa="برنامه هفتگی">
+          <h3 class="text-2xl font-bold text-center mb-4 text-gray-800 animate__animated animate__fadeIn dark:text-white" data-en="Weekly Schedule" data-fa="برنامه هفتگی">
             برنامه هفتگی
-          </h1>
+          </h3>
           <table id="schedule" class="w-full bg-white rounded-lg shadow-sm animate__animated animate__fadeInUp dark:border-black">
             <thead class="dark:border-black">
               <tr class="bg-gradient-to-r from-blue-400 to-purple-400 text-white">
@@ -126,7 +126,7 @@
       <div class="card bg-white rounded-2xl shadow-xl p-6 flex flex-col items-center animate__animated animate__bounceIn w-full max-w-lg mt-4 dark:bg-slate-900 ">
         <div class="flex items-center gap-3 mb-6">
           <span class="text-4xl">🎯</span>
-          <h1 class="text-2xl font-bold text-blue-600 dark:text-white" data-en="Smart Focus System" data-fa="سیستم تمرکز هوشمند">سیستم تمرکز هوشمند</h1>
+          <h3 class="text-2xl font-bold text-blue-600 dark:text-white" data-en="Smart Focus System" data-fa="سیستم تمرکز هوشمند">سیستم تمرکز هوشمند</h3>
         </div>
         <div class="relative">
           <svg width="200" height="200">

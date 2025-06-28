@@ -5,8 +5,8 @@
       class="w-full max-w-[550px] h-[400px] bg-blue-200 rounded-2xl shadow-xl p-8 flex flex-col items-center animate__animated animate__fadeIn dark:bg-blue-600">
       <div class="flex items-center gap-3 mb-6">
         <span class="text-4xl">💧</span>
-        <h1 class="text-2xl font-bold text-blue-600 dark:text-white" data-en="Today's Water Consumption"
-          data-fa="آب مصرفی امروز">آب مصرفی امروز</h1>
+        <h3 class="text-2xl font-bold text-blue-600 dark:text-white" data-en="Today's Water Consumption"
+          data-fa="آب مصرفی امروز">آب مصرفی امروز</h3>
       </div>
 
       <div class="flex items-center gap-6 mb-8">
@@ -45,8 +45,8 @@
     <div
       class="w-full max-w-[550px] h-[400px] rounded-2xl shadow-xl p-6 flex flex-col animate__animated animate__fadeIn bg">
       <div class="flex items-center gap-3 mb-4">
-        <h1 class="text-2xl font-bold text-green-600 bg-white p-2" data-en="🏃‍♀️ Daily Exercise Management"
-          data-fa="🏃‍♀️ مدیریت ورزش روزانه">🏃‍♀️ مدیریت ورزش روزانه</h1>
+        <h3 class="text-2xl font-bold text-green-600 bg-white p-2" data-en="🏃‍♀️ Daily Exercise Management"
+          data-fa="🏃‍♀️ مدیریت ورزش روزانه">🏃‍♀️ مدیریت ورزش روزانه</h3>
       </div>
 
       <div class="flex-1 flex flex-col items-center justify-center">
@@ -99,8 +99,8 @@
       class="w-full max-w-[550px] h-[400px] bg-pink-300 rounded-2xl shadow-xl p-6 flex flex-col animate__animated animate__fadeIn dark:bg-pink-400">
       <div class="flex items-center gap-3 mb-4">
         <span class="text-4xl">🌙</span>
-        <h1 class="text-2xl font-bold text-purple-600 bg-white p-2" data-en="Student Sleep Pattern"
-          data-fa="الگوی خواب دانش‌آموزی">الگوی خواب دانش‌آموزی</h1>
+        <h3 class="text-2xl font-bold text-purple-600 bg-white p-2" data-en="Student Sleep Pattern"
+          data-fa="الگوی خواب دانش‌آموزی">الگوی خواب دانش‌آموزی</h3>
       </div>
 
       <div class="grid grid-cols-2 gap-4 mb-6">
@@ -160,11 +160,12 @@
     <div
       class="bg-yellow-200 rounded-2xl shadow-xl p-6 flex flex-col animate__animated animate__fadeIn dark:bg-yellow-400"
       style="width: 100%; max-width: 550px; height: 400px;">
+      
       <div class="flex items-center justify-between mb-4">
         <div class="flex items-center gap-2">
           <span class="text-3xl">😊</span>
-          <h1 class="text-xl font-bold text-purple-600 dark:text-black" data-en="Daily Mood Tracker"
-            data-fa="ردیاب احساسات روزانه">ردیاب احساسات روزانه</h1>
+          <h3 class="text-xl font-bold text-purple-600 dark:text-black" data-en="Daily Mood Tracker"
+            data-fa="ردیاب احساسات روزانه">ردیاب احساسات روزانه</h3>
         </div>
         <span class="text-sm text-gray-500 dark:text-gray-800">{{ todayDate }}</span>
       </div>
@@ -223,8 +224,8 @@
      <div class="relative mb-20">
     <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl p-6 space-y-6 dark:bg-slate-600">
       <div class="text-center">
-        <h1 class="text-3xl font-bold text-purple-800 dark:text-white" data-en="My Golden Goals ✨"
-            data-fa="اهداف طلایی من ✨">اهداف طلایی من ✨</h1>
+        <h3 class="text-3xl font-bold text-purple-800 dark:text-white" data-en="My Golden Goals ✨"
+            data-fa="اهداف طلایی من ✨">اهداف طلایی من ✨</h3>
         <p class="text-gray-600 mt-2 dark:text-white" data-en="Every day I get one step closer to my dreams 💪"
             data-fa="هر روز یک قدم به رویاهام نزدیک‌تر میشم 💪">هر روز یک قدم به رویاهام نزدیک‌تر میشم 💪</p>
       </div>

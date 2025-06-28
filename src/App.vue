@@ -18,12 +18,12 @@ watch(() => route.path, () => {
 <div class="flex flex-col w-full">
   <div class="w-[100%] justify-center flex items-center bg-gray-100 dark:bg-slate-900 border-b dark:border-b-gray-300 p-5 gap-5 relative group overflow-hidden">
     <img src="./assets/images/moharam.jpg" alt="iran flag" class="w-16 h-16 rounded-full ring-4 ring-black" />
-    <h1 class="text-xl md:text-2xl font-bold text-black dark:text-white">
+    <h4 class="text-xl md:text-2xl font-bold text-black dark:text-white">
       <span>غرقه </span>
       <span class="text-red-600">بحر بلا </span>
       <span>بود در آن بر </span>
       <span class="text-red-600">تشنه...</span>
-    </h1>
+    </h4>
     
     <!-- نقل‌قول رهبر - نمایش با هاور -->
     <span class="absolute bottom-1 right-3 text-xs italic text-gray-500 dark:text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300">

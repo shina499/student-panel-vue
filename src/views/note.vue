@@ -2,9 +2,9 @@
   <section class="  bg-blue-50 min-h-screen p-6 dark:bg-slate-900">
     <div class="container mx-auto max-w-3xl">
       <!-- عنوان -->
-      <h1 class="text-3xl font-bold text-center text-gray-800 mb-6 animate__animated animate__fadeInDown dark:text-white" data-en="My Notes ✏️" data-fa="یادداشت‌های من ✏️">
+      <h2 class="text-3xl font-bold text-center text-gray-800 mb-6 animate__animated animate__fadeInDown dark:text-white" data-en="My Notes ✏️" data-fa="یادداشت‌های من ✏️">
         یادداشت‌های من ✏️
-      </h1>
+      </h2>
 
       <!-- فرم افزودن یادداشت -->
       <div class="bg-white p-6 rounded-xl shadow-lg mb-6 animate__animated animate__fadeInUp dark:bg-slate-950">

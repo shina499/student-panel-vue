@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-200 to-pink-200">
     <div class="bg-white rounded-xl shadow-lg p-8 w-full max-w-md animate__animated animate__fadeInUp dark:bg-slate-800">
-      <h1 class="text-3xl font-bold text-pink-600 text-center mb-8 dark:text-white" data-fa="ثبت‌نام در پنل دانش‌آموزی 🎉" data-en="sign in into student panel 🎉">ثبت‌نام در پنل دانش‌آموزی </h1>
+      <h2 class="text-3xl font-bold text-pink-600 text-center mb-8 dark:text-white" data-fa="ثبت‌نام در پنل دانش‌آموزی 🎉" data-en="sign in into student panel 🎉">ثبت‌نام در پنل دانش‌آموزی </h2>
       
       <div class="relative mb-6">
         <i class="fas fa-user absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-500"></i>
@@ -156,7 +156,7 @@ button:hover {
     max-width: 95%;
     padding: 1.5rem;
   }
-  h1 {
+  h2 {
     font-size: 1.75rem;
   }
   input, button {
