@@ -1,37 +1,39 @@
-// Get language from localStorage or default to 'fa'
-export const getCurrentLang = () => {
-  return localStorage.getItem('language') || 'fa'
-}
+// language.js
+import { ref, watch } from 'vue'
 
-// Set language in localStorage and update document
-export const setLanguage = (lang) => {
-  localStorage.setItem('language', lang)
-  document.documentElement.lang = lang
+// reactive language value
+export const lang = ref(localStorage.getItem('language') || 'fa')
+
+watch(lang, (newLang) => {
+  localStorage.setItem('language', newLang)
+  document.documentElement.lang = newLang
   updateTexts()
+})
+
+// Toggle between 'fa' and 'en'
+export const toggleLanguage = () => {
+  lang.value = lang.value === 'fa' ? 'en' : 'fa'
 }
 
-// Update all texts based on current language
+// Set language manually
+export const setLanguage = (newLang) => {
+  lang.value = newLang
+}
+
+// Get current language (reactive value)
+export const getCurrentLang = () => lang.value
+
+// Update DOM texts manually (for non-Vue elements)
 export const updateTexts = () => {
-  const currentLang = getCurrentLang()
+  const currentLang = lang.value
   const elements = document.querySelectorAll('[data-fa][data-en]')
-  elements.forEach(element => {
-    const faText = element.getAttribute('data-fa')
-    const enText = element.getAttribute('data-en')
-    element.textContent = currentLang === 'fa' ? faText : enText
+  elements.forEach(el => {
+    el.textContent = currentLang === 'fa' ? el.getAttribute('data-fa') : el.getAttribute('data-en')
   })
 }
 
-// Toggle language between fa and en
-export const toggleLanguage = () => {
-  const currentLang = getCurrentLang()
-  const newLang = currentLang === 'fa' ? 'en' : 'fa'
-  setLanguage(newLang)
-  return newLang
-}
-
-// Initialize language on app start
+// Optional: call this on app load
 export const initializeLanguage = () => {
-  const currentLang = getCurrentLang()
-  document.documentElement.lang = currentLang
+  document.documentElement.lang = lang.value
   updateTexts()
-} 
+}
